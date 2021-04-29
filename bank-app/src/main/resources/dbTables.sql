@@ -52,10 +52,12 @@ create table bank.accounts (
 create table bank.transactions (
 	id serial not null unique,
 	account_id int not null,
+	customer_id int not null,
 	"type" char(1) not null,
 	amount decimal(9,2),
 	"time" timestamptz,
-	constraint fk_account_id foreign key (account_id) references bank.accounts(id)
+	constraint fk_account_id foreign key (account_id) references bank.accounts(id),
+	constraint fk_customer_id foreign key (customer_id) references bank.customer(id)
 );
 
 select * from bank.account_requests;
