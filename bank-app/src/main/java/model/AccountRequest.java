@@ -62,5 +62,8 @@ public class AccountRequest {
 		this.employeeID = employeeID;
 	}
 	
-
+	public String toString() {
+		return "AccountRequest [id="+id+", customerID="+customerID+", name="+name+", balance="+balance+", ="
+				+", status="+status+", timeRequested="+timeRequested+", timeUpdated="+timeUpdated+", employeeID="+employeeID+"]";
+	}
 }
