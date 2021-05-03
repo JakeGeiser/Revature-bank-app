@@ -33,4 +33,9 @@ public class Account {
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
 	}
+	
+	@Override
+	public String toString() {
+		return "id="+id+", name="+name+", balance="+balance+", dateCreated="+dateCreated+"]";
+	}
 }
