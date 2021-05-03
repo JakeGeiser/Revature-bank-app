@@ -23,7 +23,8 @@ public class ConfigReader {
 			logger.info("Loading configuration from " + CONFIG_FILE_PATH);
 			config.load(reader);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			throw e;
 		}
 	}
 	
