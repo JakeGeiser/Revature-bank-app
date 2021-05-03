@@ -1,6 +1,6 @@
 package dao;
 
-public class DbQuery {
+public class BankDao {
 	
 	//// register user
 	
