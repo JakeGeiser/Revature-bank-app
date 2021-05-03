@@ -47,5 +47,10 @@ public class Transaction {
 	public void setTime(Timestamp time) {
 		this.time = time;
 	}
+	
+	@Override
+	public String toString() {
+		return "Transaction [id="+id+", accountID="+accountID+", customerID="+customerID+", type="+type+", amount="+amount+", time="+time+"]";
+	}
 
 }
