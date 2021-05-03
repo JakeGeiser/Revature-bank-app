@@ -6,7 +6,7 @@ public class Account {
 	private int id;
 	private String name;
 	private double balance;
-	private Date date_created;
+	private Date dateCreated;
 	
 	// getter setter methods
 	public int getId() {
@@ -27,10 +27,10 @@ public class Account {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	public Date getDate_created() {
-		return date_created;
+	public Date getDateCreated() {
+		return dateCreated;
 	}
-	public void setDate_created(Date date_created) {
-		this.date_created = date_created;
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 }

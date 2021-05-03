@@ -9,7 +9,7 @@ public class Customer {
 	private String email;
 	private String password;
 	private String phone;
-	private Date join_date;
+	private Date joinDate;
 	
 	// getter setter methods
 	public int getId() {
@@ -48,11 +48,11 @@ public class Customer {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Date getJoin_date() {
-		return join_date;
+	public Date getJoinDate() {
+		return joinDate;
 	}
-	public void setJoin_date(Date join_date) {
-		this.join_date = join_date;
+	public void setJoin_date(Date joinDate) {
+		this.joinDate = joinDate;
 	}
 	
 	
