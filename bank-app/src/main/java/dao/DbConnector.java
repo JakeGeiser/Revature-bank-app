@@ -31,7 +31,7 @@ public class DbConnector {
 				// TODO Auto-generated catch block
 				logger.error("Unable to connect to Database!", e);
 			} catch (Exception e1) {
-				logger.error("ConfigReader error", e1);
+				logger.error("Possible ConfigReader error", e1);
 			}
 			
 	}
