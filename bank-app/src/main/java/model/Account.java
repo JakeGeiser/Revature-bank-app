@@ -2,6 +2,10 @@ package model;
 
 import java.sql.*;
 
+/**
+ * Account POJO
+ * @author Jake Geiser
+ */
 public class Account {
 	private int id;
 	private String name;

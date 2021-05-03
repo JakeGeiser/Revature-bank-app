@@ -2,6 +2,10 @@ package model;
 
 import java.sql.Timestamp;
 
+/**
+ * Transaction POJO
+ * @author Jake Geiser
+ */
 public class Transaction {
 	private int id;
 	private int accountID;

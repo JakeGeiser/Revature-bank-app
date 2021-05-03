@@ -1,5 +1,10 @@
 package dao;
 
+
+/**
+ * Data Access Object for Bank App
+ * @author Jake Geiser
+ */
 public class BankDao {
 	
 	//// register user

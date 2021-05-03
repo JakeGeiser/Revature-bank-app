@@ -6,6 +6,12 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
+/**
+ * Config Properties Reader
+ * @author Jake Geiser
+ * @source Vimal
+ */
 public class ConfigReader {
 	
 	private static final Logger logger = LogManager.getLogger(ConfigReader.class);

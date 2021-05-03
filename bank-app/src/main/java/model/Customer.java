@@ -2,6 +2,10 @@ package model;
 
 import java.sql.Date;
 
+/**
+ * Customer POJO
+ * @author Jake Geiser
+ */
 public class Customer {
 	private int id;
 	private String firstName;

@@ -1,6 +1,6 @@
 package client;
 
-/*
+/**
  * User Interface for Bank Application
  * @author Jake Geiser
  */

@@ -9,6 +9,11 @@ import org.apache.logging.log4j.Logger;
 
 import utility.ConfigReader;
 
+/**
+ * Database Connector
+ * @author Jake Geiser
+ * @source Vimal
+ */
 public class DbConnector {
 	
 	private static final Logger logger = LogManager.getLogger(DbConnector.class);

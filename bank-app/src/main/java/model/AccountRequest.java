@@ -2,6 +2,10 @@ package model;
 
 import java.sql.Timestamp;
 
+/**
+ * AccountRequest POJO
+ * @author Jake Geiser
+ */
 public class AccountRequest {
 	private int id;
 	private int customerID;
