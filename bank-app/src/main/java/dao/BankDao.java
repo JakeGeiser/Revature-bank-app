@@ -9,10 +9,6 @@ public class BankDao {
 	
 	//// register user
 	
-	/*
-	 * @param 
-	 * @param
-	 *  */
 	// verify if user doesn't already exist and insert if available
 	
 	
