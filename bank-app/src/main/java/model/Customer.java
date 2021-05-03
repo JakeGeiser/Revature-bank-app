@@ -55,5 +55,10 @@ public class Customer {
 		this.joinDate = joinDate;
 	}
 	
+	@Override
+	public String toString() {
+		return "id="+id+", firstName="+firstName+", lastName="+lastName+", email="+email
+				+", password="+password+", phone="+phone+", joinDate="+joinDate+"]";
+	}
 	
 }
