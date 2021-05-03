@@ -33,7 +33,6 @@ public class DbConnector {
 				this.conn = DriverManager.getConnection(url, user, password);
 				logger.info("Connection Established!");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				logger.error("Unable to connect to Database!", e);
 			} catch (Exception e1) {
 				logger.error("Possible ConfigReader error", e1);
