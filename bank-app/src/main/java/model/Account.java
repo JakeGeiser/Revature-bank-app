@@ -47,6 +47,6 @@ public class Account {
 	
 	@Override
 	public String toString() {
-		return "Account [id="+id+", name="+name+", balance="+balance+", dateCreated="+dateCreated+"]";
+		return "Account [id="+id+", customerId="+customerId+", name="+name+", balance="+balance+", dateCreated="+dateCreated+"]";
 	}
 }
