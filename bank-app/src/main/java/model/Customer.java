@@ -16,7 +16,7 @@ public class Customer {
 	private Date joinDate;
 	
 	// define default constructor
-	Customer(){
+	public Customer(){
 		this.id = -1;
 	}
 	
@@ -60,7 +60,7 @@ public class Customer {
 	public Date getJoinDate() {
 		return joinDate;
 	}
-	public void setJoin_date(Date joinDate) {
+	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
 	}
 	
