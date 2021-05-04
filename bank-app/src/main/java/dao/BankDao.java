@@ -1,13 +1,16 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import model.Account;
 import model.Customer;
 
 /**
@@ -111,23 +114,56 @@ public class BankDao {
 	}
 	
 	
-	// get all accounts of customer x
-//	public ArrayList<Account> allAccounts(int id)
+	// get all accounts of customer id
+	public ArrayList<Account> allAccounts(int customerId) throws Exception{
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		
+		try {
+			logger.debug("Customer to register new account: "+customerId);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, customer_id, name, balance, date_created FROM bank.accounts "
+							+"WHERE customer_id = ?";
+			
+			logger.debug("using statement", sql);
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, customerId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Account tempAccount = new Account();
+				tempAccount.setId(rs.getInt("id"));
+				tempAccount.setCustomerId(rs.getInt("customer_id"));
+				tempAccount.setName(rs.getString("name"));
+				tempAccount.setBalance(rs.getDouble("balance"));
+				tempAccount.setDateCreated(rs.getDate("date_created"));
+				
+				accounts.add(tempAccount);
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		
+		logger.debug("Returning results: ", accounts);
+		return accounts;
+	}
 	
-	
-	// Display all accounts of user and their info - call method by default on homepage
-	
-	
-	// Transfer amount between 2 accounts (done on UI level with Deposit and withdraw)
-	
-	
-	// Select specific account to view (done on UI level)
-	
-	// Display all transactions of account
 	
 	// Deposit method
 	
 	// Withdraw method
+	
+	// Transfer amount between 2 accounts (done on UI level with Deposit and withdraw)
+	
+	
+	
+	// Display all transactions of account
+	
+	
 	
 	
 	

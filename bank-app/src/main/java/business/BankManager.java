@@ -7,11 +7,12 @@ package business;
  */
 public class BankManager {
 
-	
+	// register user
 	
 	/**
 	 * @param 
 	 */
 	// verify if user doesn't already exist and insert if available
+	
 
 }
