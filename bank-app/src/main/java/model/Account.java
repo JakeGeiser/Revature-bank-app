@@ -8,6 +8,7 @@ import java.sql.*;
  */
 public class Account {
 	private int id;
+	private int customerId;
 	private String name;
 	private double balance;
 	private Date dateCreated;
@@ -18,6 +19,12 @@ public class Account {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 	public String getName() {
 		return name;
