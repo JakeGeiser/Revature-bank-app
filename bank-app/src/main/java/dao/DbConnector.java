@@ -52,4 +52,12 @@ public class DbConnector {
 		return conn;
 	}
 	
+	public void closeConnection() {
+		try {
+			this.conn.close();
+		} catch (SQLException e) {
+			logger.error("Couldn't close connection: ", e);
+		}
+	}
+	
 }
