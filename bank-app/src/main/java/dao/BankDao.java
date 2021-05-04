@@ -2,8 +2,8 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,20 +40,43 @@ public class BankDao {
 			
 			inserted = pstmt.executeUpdate();
 			logger.debug("Inserted customer: "+inserted);
-			return inserted != 0;
+			
 		} catch (SQLException e) {
 			logger.error("Unable to insert customer into bank.customer", e);
-			return false;
 		}
-		
+		logger.debug("Returning results", inserted!=0);
+		return inserted != 0;
 		
 	}
 	
 	// get Customer information
-	public ArrayList<Object> getCustomer() throws Exception{
-		Connection conn = DbConnector.getInstance().getConnection();
-		
-		return null;
+	public Customer getCustomer(String email, String password) throws Exception{
+		Customer loggedInCustomer = new Customer();
+		try {
+			logger.debug("getting customer id with email="+email+", password="+password);
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, first_name, last_name, email, password, phone, join_date " 
+							+"FROM bank.customer WHERE (email='?' AND password='?')";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				loggedInCustomer.setId(rs.getInt("id")); 
+				loggedInCustomer.setFirstName(rs.getString("first_name"));
+				loggedInCustomer.setLastName(rs.getString("last_name"));
+				loggedInCustomer.setEmail(rs.getString("email"));
+				loggedInCustomer.setPassword(rs.getString("password"));
+				loggedInCustomer.setPhone(rs.getString("phone"));
+				loggedInCustomer.setJoinDate(rs.getDate("join_date"));
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		logger.debug("Returning logged in customer", loggedInCustomer.toString());
+		return loggedInCustomer;
 	}
 	
 	
