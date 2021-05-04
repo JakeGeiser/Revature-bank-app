@@ -1,16 +1,23 @@
 package dao;
 
+import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  * Data Access Object for Bank App
  * @author Jake Geiser
  */
 public class BankDao {
+	// create connection
 	
 	//// register user
 	
-	// verify if user doesn't already exist and insert if available
-	
+	// get Customer information
+	public ArrayList<Object> getCustomer() throws Exception{
+		Connection conn = DbConnector.getInstance().getConnection();
+		
+		return null;
+	}
 	
 	
 	//// user account options

@@ -22,7 +22,7 @@ public class DbConnector {
 	private Connection conn = null;
 	
 	private DbConnector() throws Exception {
-			
+			super();
 			logger.info("Establishing Connection...");
 			
 			String url = ConfigReader.getInstance().getProperty("DB_URL");
@@ -40,6 +40,7 @@ public class DbConnector {
 			
 	}
 	
+
 	public static DbConnector getInstance() throws Exception {
 		if(instance == null) {
 			instance = new DbConnector();
@@ -50,5 +51,5 @@ public class DbConnector {
 	public Connection getConnection() {
 		return conn;
 	}
-
+	
 }
