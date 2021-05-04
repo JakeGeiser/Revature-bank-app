@@ -15,6 +15,11 @@ public class Customer {
 	private String phone;
 	private Date joinDate;
 	
+	// define default constructor
+	Customer(){
+		this.id = -1;
+	}
+	
 	// getter setter methods
 	public int getId() {
 		return id;
