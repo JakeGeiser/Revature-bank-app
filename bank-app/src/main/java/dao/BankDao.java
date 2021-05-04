@@ -26,8 +26,8 @@ public class BankDao {
 			logger.debug("Received customer to register: "+customer);
 			
 			Connection conn = DbConnector.getInstance().getConnection();
-			String sql = "INSERT INTO bank.customer(first_name, last_name, email, password, phone, join_date)"
-							+ "'?', '?', '?', '?', '?' , CURRENT_TIMESTAMP";
+			String sql = "INSERT INTO bank.customer(first_name, last_name, email, password, phone, join_date) "
+							+ "VALUES ('?', '?', '?', '?', '?' , CURRENT_TIMESTAMP)";
 			logger.debug("using statement", sql);
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -79,9 +79,40 @@ public class BankDao {
 		return loggedInCustomer;
 	}
 	
+	// request a new account as customer
+	public boolean requestAccount(int customerId, String accountName, double balance) {
+		int inserted = 0;
+		try {
+			
+			logger.debug("Customer to register new account: "+customerId);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "INSERT INTO bank.account_requests(customer_id, name, balance, time_requested) "
+							+ "VALUES ('?', '?', '?', CURRENT_TIMESTAMP)";
+			logger.debug("using statement", sql);
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, customerId);
+			pstmt.setString(2, accountName);
+			pstmt.setDouble(3, balance);
+			
+			inserted = pstmt.executeUpdate();
+			logger.debug("Inserted customer: "+inserted);
+			
+		} catch (SQLException e) {
+			logger.error("Unable to insert customer into bank.customer", e);
+		} catch (Exception e1) {
+			logger.error("Unable to insert customer into bank.customer", e1);
+		}
+		logger.debug("Returning results", inserted!=0);
+		
+		return inserted!=0;
+	}
 	
-	//// user account options
-	// verify if user account exists - user login method 
+	
+	// get all accounts of customer x
+//	public ArrayList<Account> allAccounts(int id)
 	
 	
 	// Display all accounts of user and their info - call method by default on homepage
