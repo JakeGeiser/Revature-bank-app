@@ -162,11 +162,12 @@ public class BankDao {
 	public boolean deposit(int customerId, int accountId, double amount) {
 		int deposited = 0;
 		int inserted = 0;
+		Connection conn = null;
 		try {
 			
 			logger.debug("Customer to deposit amount $"+amount+" into account "+accountId);
 			
-			Connection conn = DbConnector.getInstance().getConnection();
+			conn = DbConnector.getInstance().getConnection();
 			conn.setAutoCommit(false);
 			
 			// first deposit amount into account balance
@@ -198,10 +199,24 @@ public class BankDao {
 			inserted = pstmt2.executeUpdate();
 			logger.debug("Inserted transaction: "+inserted);
 			conn.commit();
-		} catch (SQLException e) {
-			logger.error("Unable to deposit into bank.account", e);
-		} catch (Exception e1) {
+		} catch (SQLException e1) {
 			logger.error("Unable to deposit into bank.account", e1);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e11) {
+				logger.error("Unable to rollback commit");
+			}
+		} catch (Exception e2) {
+			logger.error("Unable to deposit into bank.account", e2);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e22) {
+				logger.error("Unable to rollback commit");
+			}
 		}
 		logger.debug("Returning results", inserted!=0 && deposited!=0);
 		
@@ -212,11 +227,12 @@ public class BankDao {
 	public boolean withdraw(int customerId, int accountId, double amount) {
 		int withdrawn = 0;
 		int inserted = 0;
+		Connection conn = null;
 		try {
 			
 			logger.debug("Customer to withdraw amount $"+amount+" into account "+accountId);
 			
-			Connection conn = DbConnector.getInstance().getConnection();
+			conn = DbConnector.getInstance().getConnection();
 			conn.setAutoCommit(false);
 			
 			// first deposit amount into account balance
@@ -248,10 +264,24 @@ public class BankDao {
 			logger.debug("Inserted transaction: "+inserted);
 			
 			conn.commit();
-		} catch (SQLException e) {
-			logger.error("Unable to withdraw from bank.account", e);
-		} catch (Exception e1) {
+		} catch (SQLException e1) {
 			logger.error("Unable to withdraw from bank.account", e1);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e11) {
+				logger.error("Unable to rollback commit");
+			}
+		} catch (Exception e2) {
+			logger.error("Unable to withdraw from bank.account", e2);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e22) {
+				logger.error("Unable to rollback commit");
+			}
 		}
 		logger.debug("Returning results", inserted!=0 && withdrawn!=0);
 		
@@ -264,12 +294,13 @@ public class BankDao {
 		int insertedW = 0;
 		int deposited = 0;
 		int insertedD = 0;
+		Connection conn = null;
 		try {
 			
 			//// withdraw section
 			logger.debug("Customer to withdraw amount $"+amount+" into account "+accountId1);
 			
-			Connection conn = DbConnector.getInstance().getConnection();
+			conn = DbConnector.getInstance().getConnection();
 			conn.setAutoCommit(false);
 			
 			// first deposit amount into account balance
@@ -335,10 +366,24 @@ public class BankDao {
 			
 			// commit transactions
 			conn.commit();
-		} catch (SQLException e) {
-			logger.error("Unable to transfer between accounts", e);
-		} catch (Exception e1) {
+		} catch (SQLException e1) {
 			logger.error("Unable to transfer between accounts", e1);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e11) {
+				logger.error("Unable to rollback commit");
+			}
+		} catch (Exception e2) {
+			logger.error("Unable to transfer between accounts", e2);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e22) {
+				logger.error("Unable to rollback commit");
+			}
 		}
 		logger.debug("Returning results", (insertedW!=0 && withdrawn!=0)&&(insertedD!=0 && deposited!=0));
 		
@@ -458,9 +503,103 @@ public class BankDao {
 	}
 	
 	// Update pending registration - Approved
-	
+	public boolean requestApproved(int accountId, int employeeId) {
+		int deposited = 0;
+		int inserted = 0;
+		try {
+			
+			logger.debug("Customer to deposit amount $"+amount+" into account "+accountId);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			
+			// first deposit amount into account balance
+			String sql1 = "UPDATE bank.accounts SET balance = balance + ? WHERE (id=? AND customer_id=?)";
+			logger.debug("using statement", sql1);
+			
+			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+			
+			pstmt1.setDouble(1, amount);
+			pstmt1.setInt(2, accountId);
+			pstmt1.setInt(3, customerId);
+			
+			deposited = pstmt1.executeUpdate();
+			logger.debug("Deposited records: "+deposited);
+			
+			// then create an appropriate transaction
+			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
+							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+			logger.debug("using statement", sql2);
+			
+			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+			
+			pstmt2.setInt(1, accountId);
+			pstmt2.setInt(2, customerId);
+			pstmt2.setString(3, "D");
+			pstmt2.setDouble(4, amount);
+			
+			
+			inserted = pstmt2.executeUpdate();
+			logger.debug("Inserted transaction: "+inserted);
+			conn.commit();
+		} catch (SQLException e) {
+			logger.error("Unable to deposit into bank.account", e);
+		} catch (Exception e1) {
+			logger.error("Unable to deposit into bank.account", e1);
+		}
+		logger.debug("Returning results", inserted!=0 && deposited!=0);
+		
+		return (inserted!=0 && deposited!=0);
+	}
 	// Update pending registration - Denied
-	
+	public boolean requestDenied(int customerId, int accountId, double amount) {
+		int deposited = 0;
+		int inserted = 0;
+		try {
+			
+			logger.debug("Customer to deposit amount $"+amount+" into account "+accountId);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			
+			// first deposit amount into account balance
+			String sql1 = "UPDATE bank.accounts SET balance = balance + ? WHERE (id=? AND customer_id=?)";
+			logger.debug("using statement", sql1);
+			
+			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+			
+			pstmt1.setDouble(1, amount);
+			pstmt1.setInt(2, accountId);
+			pstmt1.setInt(3, customerId);
+			
+			deposited = pstmt1.executeUpdate();
+			logger.debug("Deposited records: "+deposited);
+			
+			// then create an appropriate transaction
+			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
+							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+			logger.debug("using statement", sql2);
+			
+			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+			
+			pstmt2.setInt(1, accountId);
+			pstmt2.setInt(2, customerId);
+			pstmt2.setString(3, "D");
+			pstmt2.setDouble(4, amount);
+			
+			
+			inserted = pstmt2.executeUpdate();
+			logger.debug("Inserted transaction: "+inserted);
+			conn.commit();
+		} catch (SQLException e) {
+			logger.error("Unable to deposit into bank.account", e);
+		} catch (Exception e1) {
+			logger.error("Unable to deposit into bank.account", e1);
+		}
+		logger.debug("Returning results", inserted!=0 && deposited!=0);
+		
+		return (inserted!=0 && deposited!=0);
+	}
 	
 	// Display all transactions - method
 	
