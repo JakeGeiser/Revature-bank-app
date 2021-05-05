@@ -133,6 +133,18 @@ public class BankManager { // Business Layer
 			return false;
 		}
 	}
+	
+	// get all transactions
+	public ArrayList<Transaction> allTransactions() throws Exception{
+		logger.debug("Employee request to view all transactions");
+		return dao.allTransactions();
+	}
+	
+	// view all registered customers
+	public ArrayList<Customer> allCustomers() throws Exception{
+		logger.debug("Employee request to view all transactions");
+		return dao.allCustomers();
+	}
 
 	
 
