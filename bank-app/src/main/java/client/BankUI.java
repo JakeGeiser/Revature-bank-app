@@ -1,5 +1,6 @@
 package client;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,12 +27,14 @@ public class BankUI { // Customer Layer
 		
 		try {
 			run(input);
-		} catch (ItemNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ItemNotFoundException e1) {
+			logger.debug("ItemNotFount: ", e1);
+		} catch (Exception e2) {
+			if (e2 instanceof SQLException) {
+				logger.debug("SQL ERROR: " + e2.getLocalizedMessage());
+				System.out.println("SQL ERROR: " + e2.getLocalizedMessage());
+				System.exit(0);
+			}
 		}
 	}
 	
