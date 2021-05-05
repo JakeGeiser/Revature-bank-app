@@ -152,8 +152,55 @@ public class BankDao {
 		return accounts;
 	}
 	
-	
 	// Deposit method
+	public boolean deposit(int customerId, int accountId, double amount) {
+		int deposited = 0;
+		int inserted = 0;
+		try {
+			
+			logger.debug("Customer to deposit amount $"+amount+" into account "+accountId);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			
+			// first deposit amount into account balance
+			String sql1 = "UPDATE bank.accounts SET balance = balance + ? WHERE (id=? AND customer_id=?)";
+			logger.debug("using statement", sql1);
+			
+			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+			
+			pstmt1.setDouble(1, amount);
+			pstmt1.setInt(2, accountId);
+			pstmt1.setInt(3, customerId);
+			
+			deposited = pstmt1.executeUpdate();
+			logger.debug("Deposited records: "+deposited);
+			
+			// then create an appropriate transaction
+			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
+							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+			logger.debug("using statement", sql2);
+			
+			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+			
+			pstmt2.setInt(1, accountId);
+			pstmt2.setInt(2, customerId);
+			pstmt2.setString(3, "D");
+			pstmt2.setDouble(4, amount);
+			
+			
+			inserted = pstmt2.executeUpdate();
+			logger.debug("Deposited records: "+inserted);
+			conn.commit();
+		} catch (SQLException e) {
+			logger.error("Unable to deposit into bank.account", e);
+		} catch (Exception e1) {
+			logger.error("Unable to deposit into bank.account", e1);
+		}
+		logger.debug("Returning results", inserted!=0);
+		
+		return (inserted!=0 && deposited!=0);
+	}
 	
 	// Withdraw method
 	
