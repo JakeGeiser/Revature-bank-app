@@ -1,10 +1,13 @@
 package business;
 
+import java.util.ArrayList;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dao.BankDao;
 import exceptions.ItemNotFoundException;
+import model.Account;
 import model.Customer;
 
 /**
@@ -53,14 +56,33 @@ public class BankManager { // Business Layer
 	}
 	
 	// new Account Request
-	public boolean requestAccount(int customerId, String accountName, double balance) {
+	public boolean requestAccount(int customerId, String accountName, double balance) throws Exception{
 		logger.debug("Revieved Account request , customerId, accountName, balance");
 		return dao.requestAccount(customerId, accountName, balance);
 	}
-	/**
-	 * @param 
+	/** get all accounts for customerId
+	 * @param customerId
+	 * @return ArrayList<Account>
+	 * @throws ItemNotFoundException
+	 * @throws Exception
 	 */
-	// verify if user doesn't already exist and insert if available
+	public ArrayList<Account> allAccounts(int customerId) throws ItemNotFoundException, Exception {
+		logger.debug("Recieved allAccounts request for customerId: "+customerId);
+		return dao.allAccounts(customerId);
+	}
+	
+	// deposit
+	public boolean deposit(int customerId, int accountId, double amount) throws Exception{
+		logger.debug("Recieved deposit request", customerId, accountId, amount);
+		return dao.deposit(customerId, accountId, amount);
+	}
+	
+	// withdraw
+	public boolean withdraw(int customerId, int accountId, double amount) throws Exception{
+		logger.debug("Recieved withdraw request", customerId, accountId, amount);
+		return dao.deposit(customerId, accountId, amount);
+	}
+	
 	
 	//// Employee
 	// verify employee account - employee login method
