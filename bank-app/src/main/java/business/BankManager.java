@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import dao.BankDao;
 import exceptions.ItemNotFoundException;
 import model.Account;
+import model.AccountRequest;
 import model.Customer;
 import model.Employee;
 import model.Transaction;
@@ -105,7 +106,34 @@ public class BankManager { // Business Layer
 		return dao.getEmployee(employee.getEmail(), employee.getPassword());
 	}
 	
+	// get all account requests
+	public ArrayList<AccountRequest> allAccountRequests() throws Exception{
+		logger.debug("Recieved request to view all customer account requests");
+		return dao.allAccountRequests();
+	}
 	
+	// approve account request
+	public boolean approveRequest(int requestId, int employeeId) throws ItemNotFoundException, Exception{
+		try {
+			logger.debug("Employee "+employeeId+" requesting to approve account "+requestId);
+			return dao.requestApproved(requestId, employeeId);
+		} catch (ItemNotFoundException e) {
+			logger.warn("Item entered is not correct", e);
+			return false;
+		}
+	}
+
+	// deny account request
+	public boolean denyRequest(int requestId, int employeeId) throws ItemNotFoundException, Exception{
+		try {
+			logger.debug("Employee "+employeeId+" requesting to deny account "+requestId);
+			return dao.requestDenied(requestId, employeeId);
+		} catch (ItemNotFoundException e) {
+			logger.warn("Item entered is not correct", e);
+			return false;
+		}
+	}
+
 	
 
 }
