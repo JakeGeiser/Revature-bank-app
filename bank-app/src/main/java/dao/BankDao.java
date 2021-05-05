@@ -533,7 +533,7 @@ public class BankDao {
 				newAccount.setBalance(rs.getDouble("balance"));
 			}
 			// second - change status to approved and hold off on commit
-			String sql2 = "UPDATE bank.account_requests SET status = 'Approved', employee_id = ? WHERE id=?";
+			String sql2 = "UPDATE bank.account_requests SET status = 'Approved', time_updated = CURRENT_TIMESTAMP, employee_id = ? WHERE id=?";
 			logger.debug("using statement", sql2);
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
@@ -590,7 +590,7 @@ public class BankDao {
 			logger.debug("Employee "+employeeId+" to deny account "+requestId);
 			Connection conn = DbConnector.getInstance().getConnection();
 			
-			String sql = "UPDATE bank.account_requests SET status = 'Denied', employee_id = ? WHERE id=?";
+			String sql = "UPDATE bank.account_requests SET status = 'Denied', time_updated = CURRENT_TIMESTAMP, employee_id = ? WHERE id=?";
 			logger.debug("using statement", sql);
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
