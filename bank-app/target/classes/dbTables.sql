@@ -60,4 +60,7 @@ create table bank.transactions (
 	constraint fk_customer_id foreign key (customer_id) references bank.customer(id)
 );
 
-select * from bank.account_requests;
+insert into bank.employee(first_name, last_name, email, "password") values ('John', 'Doe', 'jdoe@revature.com', 'p12345');
+insert into bank.employee(first_name, last_name, email, "password") values ('Allison', 'Smith', 'asmith@revature.com', 'p12345');
+
+select * from bank.employee;
