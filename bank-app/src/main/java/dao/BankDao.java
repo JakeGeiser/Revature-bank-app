@@ -683,8 +683,6 @@ public class BankDao { // Persistence Layer
 		logger.debug("Returning customer list: ", customers);
 		return customers;
 	}	
-	
-	// All Accounts of customer x - method
-	
+		
 	
 }
