@@ -35,7 +35,7 @@ public class BankDao { // Persistence Layer
 	}
 	
 	// insert customer method
-	public boolean insertCustomer(Customer customer) throws Exception{
+	public boolean insertCustomer(Customer customer) throws Exception {
 		int inserted = 0;
 		try {
 			
@@ -513,7 +513,7 @@ public class BankDao { // Persistence Layer
 	}
 	
 	// Update pending registration - Approved
-	public boolean requestApproved(int requestId, int employeeId) {
+	public boolean requestApproved(int requestId, int employeeId) throws Exception{
 		int approved = 0;
 		int inserted = 0;
 		Connection conn = null;
@@ -593,7 +593,7 @@ public class BankDao { // Persistence Layer
 		return (inserted!=0 && approved!=0);
 	}
 	// Update pending registration - Denied
-	public boolean requestDenied(int requestId, int employeeId) {
+	public boolean requestDenied(int requestId, int employeeId) throws Exception{
 		int denied = 0;
 		try {
 			
