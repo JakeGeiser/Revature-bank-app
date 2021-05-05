@@ -22,7 +22,17 @@ import model.Transaction;
  */
 public class BankDao { // Persistence Layer
 	// initialize logger
-	private static final Logger logger = LogManager.getLogger(DbConnector.class);
+	private static final Logger logger = LogManager.getLogger(BankDao.class);
+	
+	// Turn BankDao into a singleton
+	private static BankDao instance;
+	
+	public static BankDao getInstance() throws Exception {
+		if(instance == null) {
+			instance = new BankDao();
+		}
+		return instance;
+	}
 	
 	// insert customer method
 	public boolean insertCustomer(Customer customer) throws Exception{
