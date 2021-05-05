@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dao.BankDao;
+import exceptions.ItemNotFoundException;
+import model.Customer;
 
 /**
  * Object Manager for Bank App
@@ -37,10 +39,24 @@ public class BankManager { // Business Layer
 	
 	
 	
-	
 	//// Customer
-	// register user
+	// get Customer
+	public Customer getCustomer(Customer customer) throws ItemNotFoundException, Exception{
+		logger.debug("Recieved get customer info: "+customer);
+		return dao.getCustomer(customer.getEmail(), customer.getPassword());
+	}
 	
+	// insertCustomer
+	public boolean insertCustomer(Customer customer) throws Exception {
+		logger.debug("Recieved insert customer request: "+customer);
+		return dao.insertCustomer(customer);
+	}
+	
+	// new Account Request
+	public boolean requestAccount(int customerId, String accountName, double balance) {
+		logger.debug("Revieved Account request , customerId, accountName, balance");
+		return dao.requestAccount(customerId, accountName, balance);
+	}
 	/**
 	 * @param 
 	 */
