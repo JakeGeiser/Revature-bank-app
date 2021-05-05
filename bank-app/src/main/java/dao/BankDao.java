@@ -583,57 +583,69 @@ public class BankDao {
 		return (inserted!=0 && approved!=0);
 	}
 	// Update pending registration - Denied
-	public boolean requestDenied(int customerId, int accountId, double amount) {
-		int deposited = 0;
-		int inserted = 0;
+	public boolean requestDenied(int requestId, int employeeId) {
+		int denied = 0;
 		try {
 			
-			logger.debug("Customer to deposit amount $"+amount+" into account "+accountId);
-			
+			logger.debug("Employee "+employeeId+" to deny account "+requestId);
 			Connection conn = DbConnector.getInstance().getConnection();
-			conn.setAutoCommit(false);
 			
-			// first deposit amount into account balance
-			String sql1 = "UPDATE bank.accounts SET balance = balance + ? WHERE (id=? AND customer_id=?)";
-			logger.debug("using statement", sql1);
+			String sql = "UPDATE bank.account_requests SET status = 'Denied', employee_id = ? WHERE id=?";
+			logger.debug("using statement", sql);
 			
-			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
-			pstmt1.setDouble(1, amount);
-			pstmt1.setInt(2, accountId);
-			pstmt1.setInt(3, customerId);
+			pstmt.setInt(1, employeeId);
+			pstmt.setInt(2, requestId);
 			
-			deposited = pstmt1.executeUpdate();
-			logger.debug("Deposited records: "+deposited);
+			denied = pstmt.executeUpdate();
 			
-			// then create an appropriate transaction
-			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
-							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
-			logger.debug("using statement", sql2);
-			
-			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
-			
-			pstmt2.setInt(1, accountId);
-			pstmt2.setInt(2, customerId);
-			pstmt2.setString(3, "D");
-			pstmt2.setDouble(4, amount);
-			
-			
-			inserted = pstmt2.executeUpdate();
-			logger.debug("Inserted transaction: "+inserted);
-			conn.commit();
+			logger.debug("Total request denied: "+denied);
 		} catch (SQLException e) {
 			logger.error("Unable to deposit into bank.account", e);
 		} catch (Exception e1) {
 			logger.error("Unable to deposit into bank.account", e1);
 		}
-		logger.debug("Returning results", inserted!=0 && deposited!=0);
+		logger.debug("Returning results", denied!=0);
 		
-		return (inserted!=0 && deposited!=0);
+		return (denied!=0);
 	}
 	
 	// Display all transactions - method
-	
+	public ArrayList<Transaction> allTransactions() throws Exception{
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		
+		try {
+			logger.debug("Employee view all transactions");
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, account_id, customer_id, type, amount, time FROM bank.transactions";
+			
+			logger.debug("using statement", sql);
+			
+			Statement stmt = conn.createStatement();
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Transaction tempTransaction = new Transaction();
+				tempTransaction.setId(rs.getInt("id"));
+				tempTransaction.setAccountID(rs.getInt("account_id"));
+				tempTransaction.setCustomerID(rs.getInt("customer_id"));
+				tempTransaction.setType(rs.getString("type"));
+				tempTransaction.setAmount(rs.getDouble("amount"));
+				tempTransaction.setTime(rs.getTimestamp("time"));
+				
+				transactions.add(tempTransaction);
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		
+		logger.debug("Returning transaction results: ", transactions);
+		return transactions;
+	}
 	// All registered Customers - method
 	
 	// All Accounts of customer x - method
