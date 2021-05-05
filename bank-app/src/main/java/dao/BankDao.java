@@ -20,7 +20,7 @@ import model.Transaction;
  * Data Access Object for Bank App
  * @author Jake Geiser
  */
-public class BankDao {
+public class BankDao { // Persistence Layer
 	// initialize logger
 	private static final Logger logger = LogManager.getLogger(DbConnector.class);
 	
@@ -646,9 +646,45 @@ public class BankDao {
 		logger.debug("Returning transaction results: ", transactions);
 		return transactions;
 	}
+	
 	// All registered Customers - method
+	public ArrayList<Customer> allCustomers() throws Exception{
+		ArrayList<Customer> customers = new ArrayList<Customer>();
+		
+		try {
+			logger.debug("Employee view all transactions");
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, first_name, last_name, email, password, phone, join_date FROM bank.transactions";
+			
+			logger.debug("using statement", sql);
+			
+			Statement stmt = conn.createStatement();
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				Customer tempCustomer = new Customer();
+				tempCustomer.setId(rs.getInt("id"));
+				tempCustomer.setFirstName(rs.getString("first_name"));
+				tempCustomer.setLastName(rs.getString("last_name"));
+				tempCustomer.setEmail(rs.getString("email"));
+				tempCustomer.setPassword(rs.getString("password"));
+				tempCustomer.setPhone(rs.getString("phone"));
+				tempCustomer.setJoinDate(rs.getDate("join_date"));
+				
+				customers.add(tempCustomer);
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		
+		logger.debug("Returning customer list: ", customers);
+		return customers;
+	}	
 	
 	// All Accounts of customer x - method
 	
-	// All transactions of customer x - method
+	
 }
