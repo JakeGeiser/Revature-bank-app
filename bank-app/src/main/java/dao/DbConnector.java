@@ -54,6 +54,7 @@ public class DbConnector {
 	
 	public void closeConnection() {
 		try {
+			logger.debug("Closing Connection");
 			this.conn.close();
 		} catch (SQLException e) {
 			logger.error("Couldn't close connection: ", e);
