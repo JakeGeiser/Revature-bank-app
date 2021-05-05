@@ -63,6 +63,9 @@ public class BankDao {
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			
 			ResultSet rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
@@ -382,7 +385,38 @@ public class BankDao {
 	
 	
 	//// employee account options
-	// verify employee account - employee login method
+	// getEmployee info
+	public Customer getEmployee(String email, String password) throws Exception{
+		Customer loggedInCustomer = new Customer();
+		try {
+			logger.debug("getting customer id with email="+email+", password="+password);
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, first_name, last_name, email, password " 
+							+"FROM bank.employee WHERE (email='?' AND password='?')";
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1,email);
+			pstmt.setString(2, password);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				loggedInCustomer.setId(rs.getInt("id")); 
+				loggedInCustomer.setFirstName(rs.getString("first_name"));
+				loggedInCustomer.setLastName(rs.getString("last_name"));
+				loggedInCustomer.setEmail(rs.getString("email"));
+				loggedInCustomer.setPassword(rs.getString("password"));
+				loggedInCustomer.setPhone(rs.getString("phone"));
+				loggedInCustomer.setJoinDate(rs.getDate("join_date"));
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		logger.debug("Returning logged in customer", loggedInCustomer.toString());
+		return loggedInCustomer;
+	}
 	
 	// View all pending user registrations
 	
