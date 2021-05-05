@@ -99,7 +99,7 @@ public class BankDao { // Persistence Layer
 	}
 	
 	// request a new account as customer
-	public boolean requestAccount(int customerId, String accountName, double balance) {
+	public boolean requestAccount(int customerId, String accountName, double balance) throws Exception{
 		int inserted = 0;
 		try {
 			
@@ -169,7 +169,7 @@ public class BankDao { // Persistence Layer
 	}
 	
 	// Deposit method
-	public boolean deposit(int customerId, int accountId, double amount) {
+	public boolean deposit(int customerId, int accountId, double amount) throws Exception{
 		int deposited = 0;
 		int inserted = 0;
 		Connection conn = null;
@@ -234,7 +234,7 @@ public class BankDao { // Persistence Layer
 	}
 	
 	// Withdraw method
-	public boolean withdraw(int customerId, int accountId, double amount) {
+	public boolean withdraw(int customerId, int accountId, double amount) throws Exception{
 		int withdrawn = 0;
 		int inserted = 0;
 		Connection conn = null;
@@ -299,7 +299,7 @@ public class BankDao { // Persistence Layer
 	}
 	
 	// Transfer amount between 2 accounts (done on UI level with Deposit and withdraw)
-	public boolean transfer(int customerId, int accountId1, int accountId2, double amount) {
+	public boolean transfer(int customerId, int accountId1, int accountId2, double amount) throws Exception{
 		int withdrawn = 0;
 		int insertedW = 0;
 		int deposited = 0;
@@ -308,7 +308,7 @@ public class BankDao { // Persistence Layer
 		try {
 			
 			//// withdraw section
-			logger.debug("Customer to withdraw amount $"+amount+" into account "+accountId1);
+			logger.debug("Customer "+customerId+" to transfer $"+amount+" from account "+accountId1+" --> "+accountId2);
 			
 			conn = DbConnector.getInstance().getConnection();
 			conn.setAutoCommit(false);
@@ -447,7 +447,7 @@ public class BankDao { // Persistence Layer
 	public Employee getEmployee(String email, String password) throws Exception{
 		Employee loggedInEmployee = new Employee();
 		try {
-			logger.debug("getting customer id with email="+email+", password="+password);
+			logger.debug("getting employee with email="+email+", password="+password);
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, first_name, last_name, email, password " 
 							+"FROM bank.employee WHERE (email='?' AND password='?')";

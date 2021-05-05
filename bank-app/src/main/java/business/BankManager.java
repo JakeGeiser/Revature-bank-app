@@ -9,6 +9,7 @@ import dao.BankDao;
 import exceptions.ItemNotFoundException;
 import model.Account;
 import model.Customer;
+import model.Employee;
 import model.Transaction;
 
 /**
@@ -73,30 +74,36 @@ public class BankManager { // Business Layer
 	}
 	
 	// deposit
-	public boolean deposit(int customerId, int accountId, double amount) throws Exception{
+	public boolean deposit(int customerId, int accountId, double amount) throws ItemNotFoundException, Exception{
 		logger.debug("Recieved deposit request", customerId, accountId, amount);
 		return dao.deposit(customerId, accountId, amount);
 	}
 	
 	// withdraw
-	public boolean withdraw(int customerId, int accountId, double amount) throws Exception{
+	public boolean withdraw(int customerId, int accountId, double amount) throws ItemNotFoundException, Exception{
 		logger.debug("Recieved withdraw request", customerId, accountId, amount);
 		return dao.deposit(customerId, accountId, amount);
 	}
 	
 	// transfer between accounts
-	public boolean transfer(int customerId, int accountId1, int accountId2, double amount) throws Exception{
+	public boolean transfer(int customerId, int accountId1, int accountId2, double amount) throws ItemNotFoundException, Exception{
 		logger.debug("Customer "+customerId+" request to transfer $"+amount+" from account "+accountId1+" --> "+accountId2);
 		return dao.transfer(customerId, accountId1, accountId2, amount);
 	}
 	
 	// all transactions of customerId
-	public ArrayList<Transaction> allTransactions(int customerId) throws Exception{
+	public ArrayList<Transaction> allTransactions(int customerId) throws ItemNotFoundException, Exception{
 		logger.debug("Customer request to view all transactions: "+customerId);
 		return dao.allTransactions(customerId);
 	}
+	
+	
 	//// Employee
-	// verify employee account - employee login method
+	// get employee information
+	public Employee getEmployee(Employee employee) throws Exception {
+		logger.debug("Requesting employee with email="+employee.getEmail()+", password="+employee.getPassword());
+		return dao.getEmployee(employee.getEmail(), employee.getPassword());
+	}
 	
 
 }
