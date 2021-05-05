@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import model.Account;
+import model.AccountRequest;
 import model.Customer;
 import model.Employee;
 import model.Transaction;
@@ -418,6 +420,42 @@ public class BankDao {
 	}
 	
 	// View all pending user registrations
+	public ArrayList<AccountRequest> allAccountRequests() throws Exception{
+		ArrayList<AccountRequest> accountRequests = new ArrayList<AccountRequest>();
+		
+		try {
+			logger.debug("View all account requests");
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, customer_id, name, balance, status, time_requested, time_updated, employee_id FROM bank.account_requests";
+			
+			logger.debug("using statement", sql);
+			
+			Statement stmt = conn.createStatement();
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				AccountRequest tempAccountRequest = new AccountRequest();
+				tempAccountRequest.setId(rs.getInt("id"));
+				tempAccountRequest.setCustomerID(rs.getInt("customer_id"));
+				tempAccountRequest.setName(rs.getString("name"));
+				tempAccountRequest.setBalance(rs.getDouble("balance"));
+				tempAccountRequest.setStatus(rs.getString("status"));
+				tempAccountRequest.setTimeRequested(rs.getTimestamp("time_requested"));
+				tempAccountRequest.setTimeUpdated(rs.getTimestamp("time_updated"));
+				tempAccountRequest.setEmployeeID(rs.getInt("employee_id"));
+				
+				accountRequests.add(tempAccountRequest);
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		
+		logger.debug("Returning account requests query: ", accountRequests);
+		return accountRequests;
+	}
 	
 	// Update pending registration - Approved
 	
