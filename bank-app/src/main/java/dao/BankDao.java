@@ -503,53 +503,84 @@ public class BankDao {
 	}
 	
 	// Update pending registration - Approved
-	public boolean requestApproved(int accountId, int employeeId) {
-		int deposited = 0;
+	public boolean requestApproved(int requestId, int employeeId) {
+		int approved = 0;
 		int inserted = 0;
+		Connection conn = null;
 		try {
 			
-			logger.debug("Customer to deposit amount $"+amount+" into account "+accountId);
+			logger.debug("Employee "+employeeId+" to approve account "+requestId);
 			
-			Connection conn = DbConnector.getInstance().getConnection();
+			conn = DbConnector.getInstance().getConnection();
 			conn.setAutoCommit(false);
 			
-			// first deposit amount into account balance
-			String sql1 = "UPDATE bank.accounts SET balance = balance + ? WHERE (id=? AND customer_id=?)";
+			// first - query starting balance amount
+			String sql1 = "SELECT customer_id, name, balance FROM bank.account_requests WHERE id=?";
 			logger.debug("using statement", sql1);
 			
 			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
 			
-			pstmt1.setDouble(1, amount);
-			pstmt1.setInt(2, accountId);
-			pstmt1.setInt(3, customerId);
+			pstmt1.setInt(1, requestId);
 			
-			deposited = pstmt1.executeUpdate();
-			logger.debug("Deposited records: "+deposited);
+			ResultSet rs = pstmt1.executeQuery();
+			conn.commit(); // execute the query as the balance is needed later
 			
-			// then create an appropriate transaction
-			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
-							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+			Account newAccount = new Account();
+			if(rs.next()) {
+				
+				newAccount.setCustomerId(rs.getInt("customer_id"));
+				newAccount.setName(rs.getString("name"));
+				newAccount.setBalance(rs.getDouble("balance"));
+			}
+			// second - change status to approved and hold off on commit
+			String sql2 = "UPDATE bank.account_requests SET status = 'Approved', employee_id = ? WHERE id=?";
 			logger.debug("using statement", sql2);
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
 			
-			pstmt2.setInt(1, accountId);
-			pstmt2.setInt(2, customerId);
-			pstmt2.setString(3, "D");
-			pstmt2.setDouble(4, amount);
+			pstmt2.setInt(1, employeeId);
+			pstmt2.setInt(2, requestId);
+			
+			approved = pstmt2.executeUpdate();
+			logger.debug("Deposited records: "+approved);
+			
+			// lastly create an appropriate account
+			String sql3 = "INSERT INTO bank.accounts(customer_id, name, balance, date_created) "
+							+"VALUES (?, '?', ?, CURRENT_DATE)";
+			logger.debug("using statement", sql2);
+			
+			PreparedStatement pstmt3 = conn.prepareStatement(sql3);
+			
+			pstmt3.setInt(1, newAccount.getCustomerId());
+			pstmt3.setString(2, newAccount.getName());
+			pstmt3.setDouble(3, newAccount.getBalance());
 			
 			
-			inserted = pstmt2.executeUpdate();
+			inserted = pstmt3.executeUpdate();
 			logger.debug("Inserted transaction: "+inserted);
 			conn.commit();
-		} catch (SQLException e) {
-			logger.error("Unable to deposit into bank.account", e);
-		} catch (Exception e1) {
-			logger.error("Unable to deposit into bank.account", e1);
+		} catch (SQLException e1) {
+			logger.error("Unable to approve account from bank.account_requests into bank.account", e1);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e11) {
+				logger.error("Unable to rollback commit");
+			}
+		} catch (Exception e2) {
+			logger.error("Unable to approve account from bank.account_requests into bank.account", e2);
+			try {
+				if (conn!=null) {
+				conn.rollback();
+				}
+			} catch (SQLException e22) {
+				logger.error("Unable to rollback commit");
+			}
 		}
-		logger.debug("Returning results", inserted!=0 && deposited!=0);
+		logger.debug("Returning results", inserted!=0 && approved!=0);
 		
-		return (inserted!=0 && deposited!=0);
+		return (inserted!=0 && approved!=0);
 	}
 	// Update pending registration - Denied
 	public boolean requestDenied(int customerId, int accountId, double amount) {
