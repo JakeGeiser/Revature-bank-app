@@ -203,9 +203,140 @@ public class BankDao {
 	}
 	
 	// Withdraw method
-	
+	public boolean withdraw(int customerId, int accountId, double amount) {
+		int withdrawn = 0;
+		int inserted = 0;
+		try {
+			
+			logger.debug("Customer to withdraw amount $"+amount+" into account "+accountId);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			
+			// first deposit amount into account balance
+			String sql1 = "UPDATE bank.accounts SET balance = balance - ? WHERE (id=? AND customer_id=?)";
+			logger.debug("using statement", sql1);
+			
+			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+			
+			pstmt1.setDouble(1, amount);
+			pstmt1.setInt(2, accountId);
+			pstmt1.setInt(3, customerId);
+			
+			withdrawn = pstmt1.executeUpdate();
+			logger.debug("Deposited records: "+withdrawn);
+			
+			// then create an appropriate transaction
+			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
+							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+			logger.debug("using statement", sql2);
+			
+			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+			
+			pstmt2.setInt(1, accountId);
+			pstmt2.setInt(2, customerId);
+			pstmt2.setString(3, "W");
+			pstmt2.setDouble(4, amount);
+			
+			inserted = pstmt2.executeUpdate();
+			logger.debug("Inserted transaction: "+inserted);
+			
+			conn.commit();
+		} catch (SQLException e) {
+			logger.error("Unable to withdraw from bank.account", e);
+		} catch (Exception e1) {
+			logger.error("Unable to withdraw from bank.account", e1);
+		}
+		logger.debug("Returning results", inserted!=0 && withdrawn!=0);
+		
+		return (inserted!=0 && withdrawn!=0);
+	}
 	// Transfer amount between 2 accounts (done on UI level with Deposit and withdraw)
-	
+	public boolean transfer(int customerId, int accountId1, int accountId2, double amount) {
+		int withdrawn = 0;
+		int insertedW = 0;
+		int deposited = 0;
+		int insertedD = 0;
+		try {
+			
+			//// withdraw section
+			logger.debug("Customer to withdraw amount $"+amount+" into account "+accountId1);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			conn.setAutoCommit(false);
+			
+			// first deposit amount into account balance
+			String sql1 = "UPDATE bank.accounts SET balance = balance - ? WHERE (id=? AND customer_id=?)";
+			logger.debug("using statement", sql1);
+			
+			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+			
+			pstmt1.setDouble(1, amount);
+			pstmt1.setInt(2, accountId1);
+			pstmt1.setInt(3, customerId);
+			
+			withdrawn = pstmt1.executeUpdate();
+			logger.debug("Deposited records: "+withdrawn);
+			
+			// then create an appropriate transaction
+			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
+							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+			logger.debug("using statement", sql2);
+			
+			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+			
+			pstmt2.setInt(1, accountId1);
+			pstmt2.setInt(2, customerId);
+			pstmt2.setString(3, "W");
+			pstmt2.setDouble(4, amount);
+			
+			insertedW = pstmt2.executeUpdate();
+			logger.debug("Inserted transaction: "+insertedW);
+			
+			
+			//// deposit section 
+			logger.debug("Customer to deposit amount $"+amount+" into account "+accountId2);
+			
+			// first deposit amount into account balance
+			String sql3 = "UPDATE bank.accounts SET balance = balance + ? WHERE (id=? AND customer_id=?)";
+			logger.debug("using statement", sql3);
+			
+			PreparedStatement pstmt3 = conn.prepareStatement(sql3);
+			
+			pstmt3.setDouble(1, amount);
+			pstmt3.setInt(2, accountId2);
+			pstmt3.setInt(3, customerId);
+			
+			deposited = pstmt3.executeUpdate();
+			logger.debug("Deposited records: "+deposited);
+			
+			// then create an appropriate transaction
+			String sql4 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
+							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+			logger.debug("using statement", sql4);
+			
+			PreparedStatement pstmt4 = conn.prepareStatement(sql4);
+			
+			pstmt4.setInt(1, accountId2);
+			pstmt4.setInt(2, customerId);
+			pstmt4.setString(3, "D");
+			pstmt4.setDouble(4, amount);
+			
+			
+			insertedD = pstmt4.executeUpdate();
+			logger.debug("Inserted transaction: "+insertedD);
+			
+			// commit transactions
+			conn.commit();
+		} catch (SQLException e) {
+			logger.error("Unable to transfer between accounts", e);
+		} catch (Exception e1) {
+			logger.error("Unable to transfer between accounts", e1);
+		}
+		logger.debug("Returning results", (insertedW!=0 && withdrawn!=0)&&(insertedD!=0 && deposited!=0));
+		
+		return ((insertedW!=0 && withdrawn!=0)&&(insertedD!=0 && deposited!=0));
+	}	
 	
 	
 	// Display all transactions of account
