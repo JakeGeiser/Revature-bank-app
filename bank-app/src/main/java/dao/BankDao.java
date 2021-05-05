@@ -190,14 +190,14 @@ public class BankDao {
 			
 			
 			inserted = pstmt2.executeUpdate();
-			logger.debug("Deposited records: "+inserted);
+			logger.debug("Inserted transaction: "+inserted);
 			conn.commit();
 		} catch (SQLException e) {
 			logger.error("Unable to deposit into bank.account", e);
 		} catch (Exception e1) {
 			logger.error("Unable to deposit into bank.account", e1);
 		}
-		logger.debug("Returning results", inserted!=0);
+		logger.debug("Returning results", inserted!=0 && deposited!=0);
 		
 		return (inserted!=0 && deposited!=0);
 	}
