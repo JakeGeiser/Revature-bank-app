@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import model.Account;
 import model.Customer;
+import model.Employee;
 import model.Transaction;
 
 /**
@@ -386,8 +387,8 @@ public class BankDao {
 	
 	//// employee account options
 	// getEmployee info
-	public Customer getEmployee(String email, String password) throws Exception{
-		Customer loggedInCustomer = new Customer();
+	public Employee getEmployee(String email, String password) throws Exception{
+		Employee loggedInEmployee = new Employee();
 		try {
 			logger.debug("getting customer id with email="+email+", password="+password);
 			Connection conn = DbConnector.getInstance().getConnection();
@@ -402,20 +403,18 @@ public class BankDao {
 			ResultSet rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				loggedInCustomer.setId(rs.getInt("id")); 
-				loggedInCustomer.setFirstName(rs.getString("first_name"));
-				loggedInCustomer.setLastName(rs.getString("last_name"));
-				loggedInCustomer.setEmail(rs.getString("email"));
-				loggedInCustomer.setPassword(rs.getString("password"));
-				loggedInCustomer.setPhone(rs.getString("phone"));
-				loggedInCustomer.setJoinDate(rs.getDate("join_date"));
+				loggedInEmployee.setId(rs.getInt("id")); 
+				loggedInEmployee.setFirstName(rs.getString("first_name"));
+				loggedInEmployee.setLastName(rs.getString("last_name"));
+				loggedInEmployee.setEmail(rs.getString("email"));
+				loggedInEmployee.setPassword(rs.getString("password"));
 			}
 		} catch (SQLException e) {
 			logger.error("Unable to perform DB query", e);
 			throw e;
 		}
-		logger.debug("Returning logged in customer", loggedInCustomer.toString());
-		return loggedInCustomer;
+		logger.debug("Returning logged in employee", loggedInEmployee.toString());
+		return loggedInEmployee;
 	}
 	
 	// View all pending user registrations
