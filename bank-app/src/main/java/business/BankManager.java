@@ -9,6 +9,7 @@ import dao.BankDao;
 import exceptions.ItemNotFoundException;
 import model.Account;
 import model.Customer;
+import model.Transaction;
 
 /**
  * Object Manager for Bank App
@@ -83,7 +84,17 @@ public class BankManager { // Business Layer
 		return dao.deposit(customerId, accountId, amount);
 	}
 	
+	// transfer between accounts
+	public boolean transfer(int customerId, int accountId1, int accountId2, double amount) throws Exception{
+		logger.debug("Customer "+customerId+" request to transfer $"+amount+" from account "+accountId1+" --> "+accountId2);
+		return dao.transfer(customerId, accountId1, accountId2, amount);
+	}
 	
+	// all transactions of customerId
+	public ArrayList<Transaction> allTransactions(int customerId) throws Exception{
+		logger.debug("Customer request to view all transactions: "+customerId);
+		return dao.allTransactions(customerId);
+	}
 	//// Employee
 	// verify employee account - employee login method
 	
