@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import model.Account;
 import model.Customer;
+import model.Transaction;
 
 /**
  * Data Access Object for Bank App
@@ -119,7 +119,7 @@ public class BankDao {
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		
 		try {
-			logger.debug("Customer to register new account: "+customerId);
+			logger.debug("Customer to view accounts: "+customerId);
 			
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, customer_id, name, balance, date_created FROM bank.accounts "
@@ -251,6 +251,7 @@ public class BankDao {
 		
 		return (inserted!=0 && withdrawn!=0);
 	}
+	
 	// Transfer amount between 2 accounts (done on UI level with Deposit and withdraw)
 	public boolean transfer(int customerId, int accountId1, int accountId2, double amount) {
 		int withdrawn = 0;
@@ -338,9 +339,44 @@ public class BankDao {
 		return ((insertedW!=0 && withdrawn!=0)&&(insertedD!=0 && deposited!=0));
 	}	
 	
-	
-	// Display all transactions of account
-	
+	// Display all transactions of customer accounts
+	public ArrayList<Transaction> allTransactions(int customerId) throws Exception{
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		
+		try {
+			logger.debug("Customer to view all transactions: "+customerId);
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, account_id, customer_id, type, amount, time FROM bank.transactions "
+							+"WHERE customer_id = ?";
+			
+			logger.debug("using statement", sql);
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, customerId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Transaction tempTransaction = new Transaction();
+				tempTransaction.setId(rs.getInt("id"));
+				tempTransaction.setAccountID(rs.getInt("account_id"));
+				tempTransaction.setCustomerID(rs.getInt("customer_id"));
+				tempTransaction.setType(rs.getString("type"));
+				tempTransaction.setAmount(rs.getDouble("amount"));
+				tempTransaction.setTime(rs.getTimestamp("time"));
+				
+				transactions.add(tempTransaction);
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		
+		logger.debug("Returning transaction results: ", transactions);
+		return transactions;
+	}
 	
 	
 	
