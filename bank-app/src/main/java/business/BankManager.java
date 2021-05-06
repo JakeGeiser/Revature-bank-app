@@ -112,6 +112,12 @@ public class BankManager { // Business Layer
 		return dao.allAccountRequests();
 	}
 	
+	// get all pending account requests
+	public ArrayList<AccountRequest> allPendingAccountRequests() throws Exception{
+		logger.debug("Recieved request to view all pending customer account requests");
+		return dao.allAccountRequests();
+	}
+	
 	// approve account request
 	public boolean approveRequest(int requestId, int employeeId) throws ItemNotFoundException, Exception{
 		try {
