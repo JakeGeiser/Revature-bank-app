@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import business.BankManager;
 import exceptions.ItemNotFoundException;
 import model.Customer;
+import model.Employee;
 
 /**
  * User Interface for Bank Application
@@ -68,7 +69,7 @@ public class BankUI { // Customer Layer
 					System.out.println("Enter email: ");
 					String email = input.nextLine();
 					
-					if(isValidEmail(email)) {
+					if(isValidEmail(email)) { // if valid email then ask for password
 						tempCustomer.setEmail(email);
 						System.out.println("Enter password: ");
 						tempCustomer.setPassword(input.nextLine());
@@ -91,7 +92,29 @@ public class BankUI { // Customer Layer
 				
 				break;
 			case 3: // employee login
-				//TODO
+				Employee tempEmployee = new Employee();
+				Employee currentEmployee = new Employee();
+				
+				do {
+					System.out.println("Enter email: ");
+					String email = input.nextLine();
+					
+					if(isValidEmail(email)) { // if valid email then ask for password
+						tempEmployee.setEmail(email);
+						System.out.println("Enter password: ");
+						tempEmployee.setPassword(input.nextLine());
+						currentEmployee = manager.getEmployee(tempEmployee);
+						if(currentEmployee.getId() < 1) {
+							System.out.println("Invalid email or password...");
+						}
+					}
+					else {
+						System.out.println("Invalid Email");
+					}
+					
+				}while(currentEmployee.getId() < 1);
+				
+				employeePortal(currentEmployee.getId(), manager, input);
 				break;
 			case 4: // exit application
 				System.out.println("Exiting Application...");
@@ -123,28 +146,22 @@ public class BankUI { // Customer Layer
 			input.nextLine();
 			
 			switch(customerOption) {
-			case 1: //Select Account Portal
+			case 1: // Select Account Portal
+				accountPortal(customerId, manager, input);
+				break;
+			case 2: // Account Balance Transfer
+				accountTransfer(customerId, manager, input);
+				break;
+			case 3: // Request New Account with Balance
 				// TODO
 				break;
-			case 2: //Account Balance Transfer
-				// TODO
-				break;
-			case 3: //Request New Account with Balance
-				// TODO
-				break;
-			case 4: //Log Out
+			case 4: // Log Out of account
 				// TODO
 			default:
 				// TODO
 				break;
 			}
-		// Select account
-		
-		// transfer funds between accounts
-		
-		// request new account
-		
-		// logout
+
 		} while(repeatOptions);
 		
 	}
