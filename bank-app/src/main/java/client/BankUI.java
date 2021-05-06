@@ -2,6 +2,7 @@ package client;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import business.BankManager;
 import exceptions.ItemNotFoundException;
 import interfaces.UIRequirements;
+import model.Customer;
 
 /**
  * User Interface for Bank Application
@@ -59,45 +61,116 @@ public class BankUI implements UIRequirements { // Customer Layer
 			switch (loginAction) {
 			case 1: // user login
 				//TODO
+				break;
 			case 2: // register new user
 				//TODO
+				break;
 			case 3: // employee login
 				//TODO
+				break;
 			case 4: // exit application
-				//TODO
+				System.out.println("Exiting Application...");
+				loginAction = 6;
+				break;
+			default:
+				System.out.println("Invalid input");
+				continue;
 			}
-		}while(loginAction>0 && loginAction<4);
+		}while(loginAction>0 && loginAction<5);
 	}
 	
-	//// home page login options
-	// implement customerPortal
+	/* home page login options
+	 *  //// implement customerPortal
+	 *  //// implement registrationPortal
+	 *  //// implement employeePortal
+	 */
+	
+	//// implement customerPortal
 	public void customerPortal(int customerId, BankManager manager, Scanner input) {
-		
+		int cutomerOption = 0;
 	}
 	
-	// implement registrationPortal
+	//// implement registrationPortal
 	public void registrationPortal(BankManager manager, Scanner input) {
-		
+		int registrationOption = 0;
+		do {
+			showRegistrationOptions();
+			
+			System.out.println("Choose option: ");
+			registrationOption = input.nextInt();
+			input.nextLine();
+			
+			switch(registrationOption) {
+			case 1:
+				
+				break;
+			case 2: // exit application
+				System.out.println("Exiting Application...");
+				registrationOption = 4;
+				break;
+			default:
+				System.out.println("Invalid input");
+				continue;
+			}
+		}while(registrationOption>0 && registrationOption<3);
 	}
 	
-	// implement employeePortal
+	//// implement employeePortal
 	public void employeePortal(int employeeId, BankManager manager, Scanner input) {
+		int employeeOption = 0;
+	}
+	
+	
+
+	
+	
+	
+	//// General checking login methods
+	private Customer getCustomer(BankManager manager, Scanner input) {
+		Customer tempCustomer = new Customer();
 		
+		System.out.println("Enter name, email, phone, and password");
+		System.out.println("First Name: ");
+		tempCustomer.setFirstName(input.nextLine());
+		
+		System.out.println("Last Name: ");
+		tempCustomer.setLastName(input.nextLine());
+		
+		System.out.println("Email: ");
+		tempCustomer.setEmail(input.nextLine());
+		
+		System.out.println("Phone Number: ");
+		tempCustomer.setPhone(input.nextLine());
+		
+		System.out.println("Password: ");
+		tempCustomer.setPassword(input.nextLine());
+		
+		return tempCustomer;
 	}
 	
 	
 	//// input checkers
-	private static boolean checkEmail(String email) {
-		boolean result = false;
-		
-		
-		return result;
+	// email checker
+	private static boolean isValidEmail(String email) {
+		// taken from https://www.geeksforgeeks.org/check-email-address-valid-not-java/
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+                  
+		Pattern pat = Pattern.compile(emailRegex);
+		if (email == null)
+		return false;
+		return pat.matcher(email).matches();
 	}
 	
-	
-	
-	
-	
+	// name checker
+	public static boolean isStringOnlyAlphabet(String str) {
+		// taken from https://www.geeksforgeeks.org/check-if-a-string-contains-only-alphabets-in-java-using-regex/
+	    return ((!str.equals(""))
+	            && (str != null)
+	            && (str.matches("^[a-zA-Z]*$")));
+	}
 	
 	//// show methods for printing options
 	// login - initial homepage options
