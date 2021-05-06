@@ -71,17 +71,17 @@ public class BankUI implements UIRequirements { // Customer Layer
 	
 	//// home page login options
 	// implement customerPortal
-	public void customerPortal(int customerId, BankManager manager) {
+	public void customerPortal(int customerId, BankManager manager, Scanner input) {
 		
 	}
 	
 	// implement registrationPortal
-	public void registrationPortal(BankManager manager) {
+	public void registrationPortal(BankManager manager, Scanner input) {
 		
 	}
 	
 	// implement employeePortal
-	public void employeePortal(int employeeId, BankManager manager) {
+	public void employeePortal(int employeeId, BankManager manager, Scanner input) {
 		
 	}
 	
