@@ -6,14 +6,16 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import business.BankManager;
 import exceptions.ItemNotFoundException;
+import interfaces.UIRequirements;
 
 /**
  * User Interface for Bank Application
  * @author Jake Geiser
  */
 
-public class BankUI { // Customer Layer
+public class BankUI implements UIRequirements { // Customer Layer
 	
 	private static final Logger logger = LogManager.getLogger(BankUI.class);
 
@@ -36,12 +38,47 @@ public class BankUI { // Customer Layer
 				System.exit(0);
 			}
 		}
+		
+		logger.info("Application Stopped");
 	}
 	
 	// method to handle user input and handle interactions with BankManger
 	private static void run(Scanner input) throws ItemNotFoundException, Exception{
 		
+		// get instance of manager
+		BankManager manager = BankManager.getInstance();
+		
+		int loginAction = 0;
+		do {
+			showLoginOptions();
+			
+			System.out.println("Chose option: ");
+			loginAction = input.nextInt();
+			input.nextLine();
+			
+			switch (loginAction) {
+			case 1: // user login
+				//TODO
+			case 2: // register new user
+				//TODO
+			case 3: // employee login
+				//TODO
+			case 4: // exit application
+				//TODO
+			}
+		}while(loginAction>0 && loginAction<4);
 	}
+	
+	
+	//// input checkers
+	private static boolean checkEmail(String email) {
+		boolean result = false;
+		
+		
+		return result;
+	}
+	
+	
 	
 	
 	
@@ -56,6 +93,14 @@ public class BankUI { // Customer Layer
 		System.out.println("2. Register New User");
 		System.out.println("3. Employee Log In");
 		System.out.println("4. Exit Application");
+	}
+	// show customer registration options
+	private static void showRegistrationOptions() {
+		System.out.println();
+		System.out.println("User Registration Options");
+		System.out.println("===========================");
+		System.out.println("1. Register New User Account");
+		System.out.println("2. Return to Login");
 	}
 	// show customer options once logged in
 	private static void showCustomerOptions() {
