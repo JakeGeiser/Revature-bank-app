@@ -474,7 +474,7 @@ public class BankDao { // Persistence Layer
 		return loggedInEmployee;
 	}
 	
-	// View all pending user registrations
+	// View all account registrations
 	public ArrayList<AccountRequest> allAccountRequests() throws Exception{
 		ArrayList<AccountRequest> accountRequests = new ArrayList<AccountRequest>();
 		
@@ -483,6 +483,45 @@ public class BankDao { // Persistence Layer
 			
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, customer_id, name, balance, status, time_requested, time_updated, employee_id FROM bank.account_requests";
+			
+			logger.debug("using statement", sql);
+			
+			Statement stmt = conn.createStatement();
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				AccountRequest tempAccountRequest = new AccountRequest();
+				tempAccountRequest.setId(rs.getInt("id"));
+				tempAccountRequest.setCustomerID(rs.getInt("customer_id"));
+				tempAccountRequest.setName(rs.getString("name"));
+				tempAccountRequest.setBalance(rs.getDouble("balance"));
+				tempAccountRequest.setStatus(rs.getString("status"));
+				tempAccountRequest.setTimeRequested(rs.getTimestamp("time_requested"));
+				tempAccountRequest.setTimeUpdated(rs.getTimestamp("time_updated"));
+				tempAccountRequest.setEmployeeID(rs.getInt("employee_id"));
+				
+				accountRequests.add(tempAccountRequest);
+			}
+		} catch (SQLException e) {
+			logger.error("Unable to perform DB query", e);
+			throw e;
+		}
+		
+		logger.debug("Returning account requests query: ", accountRequests);
+		return accountRequests;
+	}
+	
+	// View all pending account registrations
+	public ArrayList<AccountRequest> allPendingAccountRequests() throws Exception{
+		ArrayList<AccountRequest> accountRequests = new ArrayList<AccountRequest>();
+		
+		try {
+			logger.debug("View all pending account requests");
+			
+			Connection conn = DbConnector.getInstance().getConnection();
+			String sql = "SELECT id, customer_id, name, balance, status, time_requested, time_updated, employee_id" 
+							+" FROM bank.account_requests WHERE status='pending'";
 			
 			logger.debug("using statement", sql);
 			
