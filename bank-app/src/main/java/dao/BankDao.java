@@ -43,7 +43,7 @@ public class BankDao { // Persistence Layer
 			
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "INSERT INTO bank.customer(first_name, last_name, email, password, phone, join_date) "
-							+ "VALUES ('?', '?', '?', '?', '?' , CURRENT_TIMESTAMP)";
+							+ "VALUES (?, ?, ?, ?, ? , CURRENT_TIMESTAMP)";
 			logger.debug("using statement", sql);
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -72,7 +72,7 @@ public class BankDao { // Persistence Layer
 			logger.debug("getting customer id with email="+email+", password="+password);
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, first_name, last_name, email, password, phone, join_date " 
-							+"FROM bank.customer WHERE (email='?' AND password='?')";
+							+"FROM bank.customer WHERE (email=? AND password=?)";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -107,7 +107,7 @@ public class BankDao { // Persistence Layer
 			
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "INSERT INTO bank.account_requests(customer_id, name, balance, time_requested) "
-							+ "VALUES ('?', '?', '?', CURRENT_TIMESTAMP)";
+							+ "VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
 			logger.debug("using statement", sql);
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -195,7 +195,7 @@ public class BankDao { // Persistence Layer
 			
 			// then create an appropriate transaction
 			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
-							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+							+"VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 			logger.debug("using statement", sql2);
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
@@ -260,7 +260,7 @@ public class BankDao { // Persistence Layer
 			
 			// then create an appropriate transaction
 			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
-							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+							+"VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 			logger.debug("using statement", sql2);
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
@@ -328,7 +328,7 @@ public class BankDao { // Persistence Layer
 			
 			// then create an appropriate transaction
 			String sql2 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
-							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+							+"VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 			logger.debug("using statement", sql2);
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
@@ -360,7 +360,7 @@ public class BankDao { // Persistence Layer
 			
 			// then create an appropriate transaction
 			String sql4 = "INSERT INTO bank.transactions(account_id, customer_id, type, amount, time) "
-							+"VALUES (?, ?, '?', ?, CURRENT_TIMESTAMP)";
+							+"VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)";
 			logger.debug("using statement", sql4);
 			
 			PreparedStatement pstmt4 = conn.prepareStatement(sql4);
@@ -450,7 +450,7 @@ public class BankDao { // Persistence Layer
 			logger.debug("getting employee with email="+email+", password="+password);
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, first_name, last_name, email, password " 
-							+"FROM bank.employee WHERE (email='?' AND password='?')";
+							+"FROM bank.employee WHERE (email=? AND password=?)";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
@@ -582,7 +582,7 @@ public class BankDao { // Persistence Layer
 				newAccount.setBalance(rs.getDouble("balance"));
 			}
 			// second - change status to approved and hold off on commit
-			String sql2 = "UPDATE bank.account_requests SET status = 'Approved', time_updated = CURRENT_TIMESTAMP, employee_id = ? WHERE id=?";
+			String sql2 = "UPDATE bank.account_requests SET status = 'approved', time_updated = CURRENT_TIMESTAMP, employee_id = ? WHERE id=?";
 			logger.debug("using statement", sql2);
 			
 			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
@@ -595,7 +595,7 @@ public class BankDao { // Persistence Layer
 			
 			// lastly create an appropriate account
 			String sql3 = "INSERT INTO bank.accounts(customer_id, name, balance, date_created) "
-							+"VALUES (?, '?', ?, CURRENT_DATE)";
+							+"VALUES (?, ?, ?, CURRENT_DATE)";
 			logger.debug("using statement", sql2);
 			
 			PreparedStatement pstmt3 = conn.prepareStatement(sql3);
@@ -639,7 +639,7 @@ public class BankDao { // Persistence Layer
 			logger.debug("Employee "+employeeId+" to deny account "+requestId);
 			Connection conn = DbConnector.getInstance().getConnection();
 			
-			String sql = "UPDATE bank.account_requests SET status = 'Denied', time_updated = CURRENT_TIMESTAMP, employee_id = ? WHERE id=?";
+			String sql = "UPDATE bank.account_requests SET status = 'denied', time_updated = CURRENT_TIMESTAMP, employee_id = ? WHERE id=?";
 			logger.debug("using statement", sql);
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
