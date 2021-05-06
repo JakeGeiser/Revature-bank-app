@@ -98,6 +98,11 @@ public class BankManager { // Business Layer
 		return dao.allTransactions(customerId);
 	}
 	
+	// get Account info
+	public Account getAccount(int accountId) throws Exception{
+		logger.debug("Recieved get account info: "+accountId);
+		return dao.getAccount(accountId);
+	}
 	
 	//// Employee
 	// get employee information
