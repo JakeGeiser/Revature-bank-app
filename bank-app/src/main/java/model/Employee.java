@@ -7,6 +7,11 @@ public class Employee {
 	private String email;
 	private String password;
 	
+	// define default constructor
+	public Employee(){
+		this.id = -1;
+	}
+	
 	public int getId() {
 		return id;
 	}
