@@ -106,16 +106,60 @@ public class BankUI { // Customer Layer
 	
 	/* home page login options
 	 *  //// implement customerPortal
+	 *  //// implement accountPortal
 	 *  //// implement registrationPortal
 	 *  //// implement employeePortal
 	 */
 	
 	//// implement customerPortal
 	private static void customerPortal(int customerId, BankManager manager, Scanner input) {
-		int cutomerOption = 0;
+		int customerOption = 0;
+		boolean repeatOptions = true;
+		showCustomerOptions();
+		
+		do {
+			System.out.println("Select Option: ");
+			customerOption = input.nextInt();
+			input.nextLine();
+			
+			switch(customerOption) {
+			case 1: //Select Account Portal
+				// TODO
+				break;
+			case 2: //Account Balance Transfer
+				// TODO
+				break;
+			case 3: //Request New Account with Balance
+				// TODO
+				break;
+			case 4: //Log Out
+				// TODO
+			default:
+				// TODO
+				break;
+			}
+		// Select account
+		
+		// transfer funds between accounts
+		
+		// request new account
+		
+		// logout
+		} while(repeatOptions);
+		
+	}
+	
+	private static void accountTransfer(int customerId, BankManager manager, Scanner input) {
+		
+	}
+	
+	//// implement accountPortal
+	private static void accountPortal(int accountId, BankManager manager, Scanner input) {
+		
 	}
 	
 	//// implement registrationPortal
+	// registration
 	private static void registrationPortal(BankManager manager, Scanner input) {
 		int registrationOption = 0;
 		do {
@@ -143,13 +187,7 @@ public class BankUI { // Customer Layer
 			}
 		}while(registrationOption>0 && registrationOption<3);
 	}
-	
-	//// implement employeePortal
-	private static void employeePortal(int employeeId, BankManager manager, Scanner input) {
-		int employeeOption = 0;
-	}
-	
-	
+	// check if customer is valid
 	private static boolean isValidCustomer(BankManager manager, Scanner input) {
 		int counter = 0;
 		boolean whileCondition = true;
@@ -222,6 +260,13 @@ public class BankUI { // Customer Layer
 		
 		return whileCondition;
 	}
+
+	//// implement employeePortal
+	private static void employeePortal(int employeeId, BankManager manager, Scanner input) {
+		int employeeOption = 0;
+	}
+	
+	
 	
 	//// input checkers
 	// email checker
@@ -308,10 +353,11 @@ public class BankUI { // Customer Layer
 	private static void showCustomerOptions() {
 		System.out.println();
 		System.out.println("User Options");
-		System.out.println("===========================");
+		System.out.println("===================================");
 		System.out.println("1. Select Account Portal");
 		System.out.println("2. Account Balance Transfer");
-		System.out.println("3. Log Out");
+		System.out.println("3. Request New Account with Balance");
+		System.out.println("4. Log Out");
 	}
 	// show customer account options in account portal
 	private static void showAccountOptions() {
