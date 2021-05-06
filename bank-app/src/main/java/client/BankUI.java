@@ -69,6 +69,22 @@ public class BankUI implements UIRequirements { // Customer Layer
 		}while(loginAction>0 && loginAction<4);
 	}
 	
+	//// home page login options
+	// implement customerPortal
+	public void customerPortal(int customerId, BankManager manager) {
+		
+	}
+	
+	// implement registrationPortal
+	public void registrationPortal(BankManager manager) {
+		
+	}
+	
+	// implement employeePortal
+	public void employeePortal(int employeeId, BankManager manager) {
+		
+	}
+	
 	
 	//// input checkers
 	private static boolean checkEmail(String email) {
