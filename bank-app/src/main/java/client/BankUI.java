@@ -101,7 +101,7 @@ public class BankUI implements UIRequirements { // Customer Layer
 			input.nextLine();
 			
 			switch(registrationOption) {
-			case 1:
+			case 1: // register account
 				
 				break;
 			case 2: // exit application
@@ -126,24 +126,80 @@ public class BankUI implements UIRequirements { // Customer Layer
 	
 	
 	//// General checking login methods
-	private Customer getCustomer(BankManager manager, Scanner input) {
+	private Customer getValidCustomer(BankManager manager, Scanner input) {
 		Customer tempCustomer = new Customer();
+		int counter = 0;
+		boolean whileCondition = true;
 		
-		System.out.println("Enter name, email, phone, and password");
-		System.out.println("First Name: ");
-		tempCustomer.setFirstName(input.nextLine());
-		
-		System.out.println("Last Name: ");
-		tempCustomer.setLastName(input.nextLine());
-		
-		System.out.println("Email: ");
-		tempCustomer.setEmail(input.nextLine());
-		
-		System.out.println("Phone Number: ");
-		tempCustomer.setPhone(input.nextLine());
-		
-		System.out.println("Password: ");
-		tempCustomer.setPassword(input.nextLine());
+		do {
+			counter = 0;
+			System.out.println("Enter name, email, phone, and password");
+			System.out.println("First Name: ");
+			String firstName = input.nextLine();
+			if(isValidName(firstName)) {
+				tempCustomer.setFirstName(input.nextLine());
+				counter++;
+			}
+			else {
+				System.out.println("Invalid Name");
+			}
+			
+			if(counter > 0) {
+				System.out.println("Last Name: ");
+				String lastName = input.nextLine();
+				if(isValidName(lastName)) {
+					tempCustomer.setLastName(input.nextLine());
+					counter++;
+				}
+				else {
+					System.out.println("Invalid Name");
+				}
+			}
+			
+			if(counter > 1) {
+				System.out.println("Email: ");
+				String email = input.nextLine();
+				if(isValidEmail(email)) {
+					tempCustomer.setEmail(input.nextLine());
+					counter++;
+				}
+				else {
+					System.out.println("Invalid Email");
+				}
+			}
+			
+			if(counter > 2) {
+				System.out.println("Phone Number: ");
+				String phone = input.nextLine();
+				if(isValidPhoneNumber(phone)) {
+					tempCustomer.setPhone(input.nextLine());;
+					counter++;
+				}
+				else {
+					System.out.println("Invalid Phone Number");
+				}
+			}
+			
+			if(counter > 3) {
+				System.out.println("Password: ");
+				tempCustomer.setPassword(input.nextLine());
+			}
+			
+			try {
+				Customer queriedCustomer = manager.getCustomer(tempCustomer);
+				if(queriedCustomer.getId()<1) {
+					logger.info("Customer is not taken: "+tempCustomer.toString());
+					whileCondition = false;
+				}
+			} catch (ItemNotFoundException e) {
+				e.printStackTrace();
+				whileCondition = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				whileCondition = true;
+			}
+			
+		} while(whileCondition);
 		
 		return tempCustomer;
 	}
@@ -160,17 +216,46 @@ public class BankUI implements UIRequirements { // Customer Layer
                   
 		Pattern pat = Pattern.compile(emailRegex);
 		if (email == null)
-		return false;
+			return false;
 		return pat.matcher(email).matches();
 	}
 	
 	// name checker
-	public static boolean isStringOnlyAlphabet(String str) {
+	public static boolean isValidName(String str) {
 		// taken from https://www.geeksforgeeks.org/check-if-a-string-contains-only-alphabets-in-java-using-regex/
 	    return ((!str.equals(""))
 	            && (str != null)
 	            && (str.matches("^[a-zA-Z]*$")));
 	}
+	
+	// phone number checker
+	private static boolean isValidPhoneNumber(String phoneNumber) {
+		// taken from https://www.javaprogramto.com/2020/04/java-phone-number-validation.html
+		// validate phone numbers of format "1234567890"
+		if (phoneNumber.matches("\\d{10}"))
+			return true;
+		// validating phone number with -, . or spaces
+		else if (phoneNumber.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"))
+		    return true;
+		// validating phone number with extension length from 3 to 5
+		else if (phoneNumber.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
+		    return true;
+		// validating phone number where area code is in braces ()
+		else if (phoneNumber.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
+			return true;
+		  // Validation for India numbers
+		else if (phoneNumber.matches("\\d{4}[-\\.\\s]\\d{3}[-\\.\\s]\\d{3}"))
+			return true;
+		else if (phoneNumber.matches("\\(\\d{5}\\)-\\d{3}-\\d{3}"))
+			return true;
+	
+		else if (phoneNumber.matches("\\(\\d{4}\\)-\\d{3}-\\d{3}"))
+			return true;
+		  // return false if nothing matches the input
+		else
+			return false;
+	}
+	
 	
 	//// show methods for printing options
 	// login - initial homepage options
