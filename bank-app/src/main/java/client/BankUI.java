@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import business.BankManager;
 import exceptions.ItemNotFoundException;
-import interfaces.UIRequirements;
 import model.Customer;
 
 /**
@@ -17,7 +16,7 @@ import model.Customer;
  * @author Jake Geiser
  */
 
-public class BankUI implements UIRequirements { // Customer Layer
+public class BankUI { // Customer Layer
 	
 	private static final Logger logger = LogManager.getLogger(BankUI.class);
 
@@ -63,7 +62,8 @@ public class BankUI implements UIRequirements { // Customer Layer
 				//TODO
 				break;
 			case 2: // register new user
-				//TODO
+				registrationPortal(manager, input);
+				
 				break;
 			case 3: // employee login
 				//TODO
@@ -86,12 +86,12 @@ public class BankUI implements UIRequirements { // Customer Layer
 	 */
 	
 	//// implement customerPortal
-	public void customerPortal(int customerId, BankManager manager, Scanner input) {
+	private void customerPortal(int customerId, BankManager manager, Scanner input) {
 		int cutomerOption = 0;
 	}
 	
 	//// implement registrationPortal
-	public void registrationPortal(BankManager manager, Scanner input) {
+	private static void registrationPortal(BankManager manager, Scanner input) {
 		int registrationOption = 0;
 		do {
 			showRegistrationOptions();
@@ -102,7 +102,20 @@ public class BankUI implements UIRequirements { // Customer Layer
 			
 			switch(registrationOption) {
 			case 1: // register account
-				
+				boolean whileCondition = true;
+				do {
+					whileCondition = isValidCustomer(manager, input);
+				}while(whileCondition);
+//				Customer validCustomer = getValidCustomer(manager, input);
+//				boolean registered = false;
+//				try {
+//					registered = manager.insertCustomer(validCustomer);
+//				} catch (Exception e) {
+//					logger.debug("Insert Customer Error: ",e);
+//				}
+//				if(registered) {
+//					System.out.println("Account Registered! Return to login page.");
+//				}
 				break;
 			case 2: // exit application
 				System.out.println("Exiting Application...");
@@ -116,7 +129,7 @@ public class BankUI implements UIRequirements { // Customer Layer
 	}
 	
 	//// implement employeePortal
-	public void employeePortal(int employeeId, BankManager manager, Scanner input) {
+	private void employeePortal(int employeeId, BankManager manager, Scanner input) {
 		int employeeOption = 0;
 	}
 	
@@ -126,84 +139,157 @@ public class BankUI implements UIRequirements { // Customer Layer
 	
 	
 	//// General checking login methods
-	private Customer getValidCustomer(BankManager manager, Scanner input) {
-		Customer tempCustomer = new Customer();
+//	private static Customer getValidCustomer(BankManager manager, Scanner input) {
+//		int counter = 0;
+//		boolean whileCondition = true;
+//		Customer tempCustomer = new Customer();
+//		
+//		do {
+//			tempCustomer = new Customer();
+//			counter = 0;
+//			System.out.println("Enter name, email, phone, and password");
+//			System.out.println("First Name: ");
+//			String firstName = input.nextLine();
+//			if(isValidName(firstName)) {
+//				tempCustomer.setFirstName(firstName);
+//				counter++;
+//			}
+//			else {
+//				System.out.println("Invalid Name");
+//			}
+//			
+//			if(counter > 0) {
+//				System.out.println("Last Name: ");
+//				String lastName = input.nextLine();
+//				if(isValidName(lastName)) {
+//					tempCustomer.setLastName(lastName);
+//					counter++;
+//				}
+//				else {
+//					System.out.println("Invalid Name");
+//				}
+//			}
+//			
+//			if(counter > 1) {
+//				System.out.println("Email: ");
+//				String email = input.nextLine();
+//				if(isValidEmail(email)) {
+//					tempCustomer.setEmail(email);
+//					counter++;
+//				}
+//				else {
+//					System.out.println("Invalid Email");
+//				}
+//			}
+//			
+//			if(counter > 2) {
+//				System.out.println("Phone Number: ");
+//				String phone = input.nextLine();
+//				if(isValidPhoneNumber(phone)) {
+//					tempCustomer.setPhone(phone);;
+//					counter++;
+//				}
+//				else {
+//					System.out.println("Invalid Phone Number");
+//				}
+//			}
+//			
+//			if(counter > 3) {
+//				System.out.println("Password: ");
+//				tempCustomer.setPassword(input.nextLine());
+//			}
+//			
+//			try {
+//				Customer queriedCustomer = manager.getCustomer(tempCustomer);
+//				if(queriedCustomer.getId()<1) {
+//					logger.info("Customer is not taken: "+tempCustomer.toString());
+//					whileCondition = false;
+//				}
+//			} catch (ItemNotFoundException e) {
+//				logger.error("Invalid Input ERROR: ", e);
+//				whileCondition = true;
+//			} catch (Exception e) {
+//				logger.error("Invalid Input ERROR: ", e);
+//				whileCondition = true;
+//			}
+//			
+//		} while(whileCondition);
+//		
+//		return tempCustomer;
+//	}
+	
+	private static boolean isValidCustomer(BankManager manager, Scanner input) {
 		int counter = 0;
 		boolean whileCondition = true;
+		Customer tempCustomer = new Customer();
 		
-		do {
-			counter = 0;
-			System.out.println("Enter name, email, phone, and password");
-			System.out.println("First Name: ");
-			String firstName = input.nextLine();
-			if(isValidName(firstName)) {
-				tempCustomer.setFirstName(input.nextLine());
+		System.out.println("Enter name, email, phone, and password");
+		System.out.println("First Name: ");
+		String firstName = input.nextLine();
+		if(isValidName(firstName)) {
+			tempCustomer.setFirstName(firstName);
+			counter++;
+		}
+		else {
+			System.out.println("Invalid Name");
+		}
+		
+		if(counter > 0) {
+			System.out.println("Last Name: ");
+			String lastName = input.nextLine();
+			if(isValidName(lastName)) {
+				tempCustomer.setLastName(lastName);
 				counter++;
 			}
 			else {
 				System.out.println("Invalid Name");
 			}
-			
-			if(counter > 0) {
-				System.out.println("Last Name: ");
-				String lastName = input.nextLine();
-				if(isValidName(lastName)) {
-					tempCustomer.setLastName(input.nextLine());
-					counter++;
-				}
-				else {
-					System.out.println("Invalid Name");
-				}
-			}
-			
-			if(counter > 1) {
-				System.out.println("Email: ");
-				String email = input.nextLine();
-				if(isValidEmail(email)) {
-					tempCustomer.setEmail(input.nextLine());
-					counter++;
-				}
-				else {
-					System.out.println("Invalid Email");
-				}
-			}
-			
-			if(counter > 2) {
-				System.out.println("Phone Number: ");
-				String phone = input.nextLine();
-				if(isValidPhoneNumber(phone)) {
-					tempCustomer.setPhone(input.nextLine());;
-					counter++;
-				}
-				else {
-					System.out.println("Invalid Phone Number");
-				}
-			}
-			
-			if(counter > 3) {
-				System.out.println("Password: ");
-				tempCustomer.setPassword(input.nextLine());
-			}
-			
-			try {
-				Customer queriedCustomer = manager.getCustomer(tempCustomer);
-				if(queriedCustomer.getId()<1) {
-					logger.info("Customer is not taken: "+tempCustomer.toString());
-					whileCondition = false;
-				}
-			} catch (ItemNotFoundException e) {
-				e.printStackTrace();
-				whileCondition = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				whileCondition = true;
-			}
-			
-		} while(whileCondition);
+		}
 		
-		return tempCustomer;
+		if(counter > 1) {
+			System.out.println("Email: ");
+			String email = input.nextLine();
+			if(isValidEmail(email)) {
+				tempCustomer.setEmail(email);
+				counter++;
+			}
+			else {
+				System.out.println("Invalid Email");
+			}
+		}
+		
+		if(counter > 2) {
+			System.out.println("Phone Number: ");
+			String phone = input.nextLine();
+			if(isValidPhoneNumber(phone)) {
+				tempCustomer.setPhone(extractInt(phone));
+				counter++;
+			}
+			else {
+				System.out.println("Invalid Phone Number");
+			}
+		}
+		
+		if(counter > 3) {
+			System.out.println("Password: ");
+			tempCustomer.setPassword(input.nextLine());
+		}
+		
+		try {
+			whileCondition = (manager.insertCustomer(tempCustomer)==false);
+		} catch (ItemNotFoundException e) {
+			logger.error("Invalid Input ERROR: ", e);
+			System.out.println("Email already in use");
+			whileCondition = true;
+		} catch (Exception e) {
+			logger.error("Invalid Input ERROR: ", e);
+			System.out.println("Email already in use");
+			whileCondition = true;
+		}
+			
+		
+		return whileCondition;
 	}
-	
 	
 	//// input checkers
 	// email checker
@@ -256,6 +342,16 @@ public class BankUI implements UIRequirements { // Customer Layer
 			return false;
 	}
 	
+	// turn phone number into only digits
+    static String extractInt(String str)
+    {
+        // Replacing every non-digit number with nothing("")
+        str = str.replaceAll("[^\\d]", "");
+        // Remove extra spaces from the outside of string
+        str = str.trim();
+  
+        return str;
+    }
 	
 	//// show methods for printing options
 	// login - initial homepage options
