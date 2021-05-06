@@ -447,7 +447,7 @@ public class BankDao { // Persistence Layer
 			
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, customer_id, name, balance, date_created FROM bank.accounts "
-							+"WHERE account_id = ?";
+							+"WHERE id = ?";
 			
 			logger.debug("using statement", sql);
 			
@@ -464,7 +464,6 @@ public class BankDao { // Persistence Layer
 				tempAccount.setName(rs.getString("name"));
 				tempAccount.setBalance(rs.getDouble("balance"));
 				tempAccount.setDateCreated(rs.getDate("date_created"));
-				
 			}
 		} catch (SQLException e) {
 			logger.error("Unable to perform DB query", e);
