@@ -7,7 +7,7 @@ public class Employee {
 	private String email;
 	private String password;
 	
-	// define default constructor
+	// define default constructor 
 	public Employee(){
 		this.id = -1;
 	}
