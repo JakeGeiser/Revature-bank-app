@@ -297,7 +297,23 @@ public class BankUI { // Customer Layer
 					}
 				}
 			case 4: // Withdraw
-				// TODO
+				System.out.println("Input amount($) you wish to deposit: ");
+				double withdraw = input.nextDouble();
+				input.nextLine();
+				if(withdraw>0) {
+					try {
+						if(isValidTransaction(manager.getAccount(accountId).getBalance(), withdraw)) {
+							manager.withdraw(customerId, accountId, withdraw);
+						}
+						else {
+							System.out.println("Withdraw amount exceeds current account balance.");
+						}
+					} catch (ItemNotFoundException e) {
+						logger.error("Withdraw("+withdraw+") from Account("+accountId+") ERROR: ", e);
+					} catch (Exception e) {
+						logger.error("Withdraw("+withdraw+") from Account("+accountId+") ERROR: ", e);
+					}
+				}
 			case 5: // Return to User Options Page
 				// TODO
 			default:
