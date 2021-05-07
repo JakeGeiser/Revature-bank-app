@@ -137,10 +137,9 @@ public class BankUI { // Customer Layer
 	//// implement customerPortal
 	private static void customerPortal(int customerId, BankManager manager, Scanner input) {
 		int customerOption = 0;
-		boolean repeatOptions = true;
-		showCustomerOptions();
-		
 		do {
+			customerOption = 0;
+			showCustomerOptions();
 			System.out.println("Select Option: ");
 			customerOption = input.nextInt();
 			input.nextLine();
@@ -156,22 +155,57 @@ public class BankUI { // Customer Layer
 				// TODO
 				break;
 			case 4: // Log Out of account
-				// TODO
+				customerOption = 5;
 			default:
 				// TODO
 				break;
 			}
 
-		} while(repeatOptions);
+		} while(customerOption > 0 && customerOption < 5);
 		
 	}
 	
 	private static void accountTransfer(int customerId, BankManager manager, Scanner input) {
+		boolean loopOption = true;
+		
+		do {
+			System.out.println("Select account you wish to transfer from: ");
+			int accountId1 = input.nextInt();
+			input.nextLine();
+			System.out.println("Select account you wish to transfer to: ");
+			int accountId2 = input.nextInt();
+			input.nextLine();
+			
+			System.out.println("Enter amount you with to transfer from"
+						+" Account("+accountId1+") to Account("+accountId2+"): ");
+			double amount = input.nextDouble();
+			
+			try {
+				
+				double balance1 = accountBalance(accountId1, manager);
+				
+				if (isValidTransaction(balance1,amount)) {
+					manager.transfer(customerId, accountId1, accountId2, amount);
+					loopOption = false;
+				}
+			} catch (Exception e) {
+				logger.debug("Transfer ERROR: ", e);
+			}
+			input.nextLine();
+			// check if the amount will move into red
+			
+		}while(loopOption);
 		
 	}
 	
 	//// implement accountPortal
 	private static void accountPortal(int accountId, BankManager manager, Scanner input) {
+		
+	}
+	
+	private static double accountBalance(int accountId, BankManager manager) throws Exception {
+		
+		return manager.getAccount(accountId).getBalance();
 		
 	}
 	
@@ -337,7 +371,7 @@ public class BankUI { // Customer Layer
 	}
 	
 	// turn phone number into only digits
-    static String extractInt(String str)
+    private static String extractInt(String str)
     {
         // Replacing every non-digit number with nothing("")
         str = str.replaceAll("[^\\d]", "");
@@ -347,6 +381,17 @@ public class BankUI { // Customer Layer
         return str;
     }
 	
+    // transaction checker (no negative balances)
+    // A - B > 0 -> true or false
+    private static boolean isValidTransaction(double A, double B) {
+    	if(A-B > 0) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    
 	//// show methods for printing options
 	// login - initial homepage options
 	private static void showLoginOptions() {
