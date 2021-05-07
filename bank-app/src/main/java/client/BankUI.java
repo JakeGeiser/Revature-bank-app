@@ -180,8 +180,10 @@ public class BankUI { // Customer Layer
 				break;
 			case 4: // Log Out of account
 				customerOption = 5;
+				break;
 			default:
-				// TODO
+				System.out.println("Invalid Option");
+				customerOption = 5;
 				break;
 			}
 
@@ -208,15 +210,19 @@ public class BankUI { // Customer Layer
 				
 				double balance1 = manager.getAccount(accountId1).getBalance();
 				
+				// check if transfer is valid, then make the transfer
 				if (isValidTransaction(balance1,amount)) {
 					manager.transfer(customerId, accountId1, accountId2, amount);
 					loopOption = false;
+					System.out.println("Transfer transaction is successful");
+				}
+				else {
+					System.out.println("Transfer amount exceeds balance");
 				}
 			} catch (Exception e) {
-				logger.debug("Transfer ERROR: ", e);
+				logger.error("Transfer ERROR: ", e);
 			}
-			input.nextLine();
-			// check if the amount will move into red
+			
 			
 		}while(loopOption);
 		
