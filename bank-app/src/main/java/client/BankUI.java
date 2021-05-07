@@ -13,6 +13,7 @@ import exceptions.ItemNotFoundException;
 import model.Account;
 import model.Customer;
 import model.Employee;
+import model.Transaction;
 
 /**
  * User Interface for Bank Application
@@ -167,7 +168,10 @@ public class BankUI { // Customer Layer
 			
 			switch(customerOption) {
 			case 1: // Select Account Portal
-				accountPortal(customerId, manager, input);
+				System.out.println("Select Account: ");
+				int accountId = input.nextInt();
+				input.nextLine();
+				accountPortal(customerId, accountId, manager, input);
 				break;
 			case 2: // Account Balance Transfer
 				accountTransfer(customerId, manager, input);
@@ -250,7 +254,7 @@ public class BankUI { // Customer Layer
 	}
 	
 	//// implement accountPortal
-	private static void accountPortal(int accountId, BankManager manager, Scanner input) {
+	private static void accountPortal(int customerId, int accountId, BankManager manager, Scanner input) {
 		int accountOption = 0;
 		do {
 			showAccountOptions();
@@ -264,7 +268,21 @@ public class BankUI { // Customer Layer
 					logger.error("Display Account("+accountId+") Balance ERROR: ", e);
 				}
 			case 2: // Display Account Transactions
-				// TODO
+				try {
+					ArrayList<Transaction> accTransactions = manager.allTransactions(customerId, accountId);
+					System.out.println("ID | Type | Amount | Time");
+					for(Transaction t : accTransactions) {
+						System.out.println(t.getId()+" | "
+											+ t.getType()+" | $"
+											+ t.getAmount() +" | "
+											+ t.getTime());
+					}
+				} catch (ItemNotFoundException e) {
+					logger.error("Display Account("+accountId+") Transactions ERROR: ", e);
+					e.printStackTrace();
+				} catch (Exception e) {
+					logger.error("Display Account("+accountId+") Transactions ERROR: ", e);
+				}
 			case 3: // Deposit
 				// TODO
 			case 4: // Withdraw
