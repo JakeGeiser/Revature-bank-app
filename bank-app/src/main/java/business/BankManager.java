@@ -26,7 +26,7 @@ public class BankManager { // Business Layer
 	
 	// make BankManager a singleton
 	private static BankManager instance;
-	private BankManager() throws Exception{ // default constructor
+	BankManager(){ // default constructor
 		// Initialize DAO singleton
 		try {
 			logger.debug("Initializeing BankManager with BankDao instance...");
@@ -34,6 +34,10 @@ public class BankManager { // Business Layer
 		} catch (Exception e) {
 			logger.error("Issue creating BankDao inside BankManager", e);
 		}
+	}
+	
+	public void setDao(BankDao dao) {
+		this.dao = dao;
 	}
 	
 	public static BankManager getInstance() throws Exception {
