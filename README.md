@@ -23,4 +23,8 @@
 ![](images/FunctionalFlowChart.png)
 
 ## How To Use
-In order to use this application on your local machine, you must have JDK/JRE and utalize as a maven project. You will need to create a config.properties file that contains properties DB_USER : your database username("postgre" in my case), DB_URL: your database jdbc url(localhost url in my case), and DB_PASSWORD : what you defined your database password as.
+In order to use this application on your local machine, you must have JDK/JRE and utalize as a maven project. You will need to create a config.properties file that contains properties DB_USER : your database username("postgre" in my case), DB_URL: your database jdbc url(localhost url in my case), and DB_PASSWORD : what you defined your database password as. Then change the CONFIG_FILE_PATH to the location of you config.properties.
+
+Then you must intialize your database using the sql file found in the resources folder as a schema called bank.
+
+Once everything is changed to your specific paths, you can then use the application in the console by running the BankUI.
