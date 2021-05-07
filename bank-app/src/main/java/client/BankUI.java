@@ -67,7 +67,7 @@ public class BankUI { // Customer Layer
 			case 1: // user login
 				Customer tempCustomer = new Customer();
 				Customer currentCustomer = new Customer();
-				
+				boolean customerLogin = true;
 				do {
 					System.out.println("Enter email: ");
 					String email = input.nextLine();
@@ -80,14 +80,23 @@ public class BankUI { // Customer Layer
 						if(currentCustomer.getId() < 1) {
 							System.out.println("Invalid email or password...");
 						}
+						else {
+							customerLogin = false;
+							employeePortal(currentCustomer.getId(), manager, input);
+							break;
+						}
 					}
 					else {
 						System.out.println("Invalid Email");
 					}
 					
+					System.out.println("Try logging in again? (y/n)");
+					if("n".equals(input.nextLine())) {
+						break;
+					}
+					
 				}while(currentCustomer.getId() < 1);
 				
-				customerPortal(currentCustomer.getId(), manager, input);
 				
 				break;
 			case 2: // register new user
@@ -119,14 +128,13 @@ public class BankUI { // Customer Layer
 					else {
 						System.out.println("Invalid Email");
 					}
+					
 					System.out.println("Try logging in again? (y/n)");
 					if("n".equals(input.nextLine())) {
 						break;
 					}
 					
 				}while(employeeLogin);
-				
-				
 				break;
 			case 4: // exit application
 				System.out.println("Exiting Application...");
