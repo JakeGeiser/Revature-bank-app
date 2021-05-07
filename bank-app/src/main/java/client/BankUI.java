@@ -152,7 +152,31 @@ public class BankUI { // Customer Layer
 				accountTransfer(customerId, manager, input);
 				break;
 			case 3: // Request New Account with Balance
-				// TODO
+				boolean arOptions = true;
+				do {
+					System.out.println("Enter account-name and balance you desire.");
+					System.out.println("Enter Desired Account Name: ");
+					String accountName = input.nextLine();
+					if(isValidName(accountName)) {
+						System.out.println("Enter Desired Balance: ");
+						double balance = input.nextDouble();
+						input.nextLine();
+						
+						if(balance >= 0) {
+							try {
+								manager.requestAccount(customerId, accountName, balance);
+								arOptions = false;
+							} catch (Exception e) {
+								logger.error("Account Request ERROR: ",e);
+								
+							}
+						}
+						
+					}
+					System.out.println("Please wait 24 hours for a Revature "
+							+ "representative to view your request.");
+					
+				}while(arOptions);
 				break;
 			case 4: // Log Out of account
 				customerOption = 5;
