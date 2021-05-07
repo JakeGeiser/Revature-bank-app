@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import business.BankManager;
 import exceptions.ItemNotFoundException;
 import model.Account;
+import model.AccountRequest;
 import model.Customer;
 import model.Employee;
 import model.Transaction;
@@ -461,10 +462,39 @@ public class BankUI { // Customer Layer
 			showEmployeeOptions();
 			switch(employeeOption) {
 			case 1: // Show all account requests
-				// TODO
+				try {
+					ArrayList<AccountRequest> allRequests = manager.allAccountRequests();
+					System.out.println("ID | Customer ID | Name | Balance | Status | Time Requested | Time Updated");
+					for(AccountRequest ar : allRequests) {
+						System.out.println(ar.getId() + " |      "
+											+ ar.getCustomerID() + "     | "
+											+ ar.getName() + " | "
+											+ ar.getBalance() + " | "
+											+ ar.getStatus() + " | "
+											+ ar.getTimeRequested() + " | "
+											+ ar.getTimeUpdated());
+					}
+				
+				} catch (Exception e) {
+					logger.error("Getting All Requests ERROR: ", e);
+				}
 				break;
 			case 2: // show all PENDING account requests
-				// TODO
+				try {
+					ArrayList<AccountRequest> allPendingRequests = manager.allPendingAccountRequests();
+					System.out.println("ID | Customer ID | Name | Balance | Status | Time Requested");
+					for(AccountRequest apr : allPendingRequests) {
+						System.out.println(apr.getId() + " |      "
+											+ apr.getCustomerID() + "     | "
+											+ apr.getName() + " | "
+											+ apr.getBalance() + " | "
+											+ apr.getStatus() + " | "
+											+ apr.getTimeRequested() + " | ");
+					}
+				
+				} catch (Exception e) {
+					logger.error("Getting All Requests ERROR: ", e);
+				}
 				break;
 			case 3: // show
 				// TODO
@@ -480,7 +510,7 @@ public class BankUI { // Customer Layer
 				break;
 			}
 			
-		} while(employeeOption > 0 && employeeOption < 5);
+		} while(employeeOption > 0 && employeeOption < 7);
 	}
 	
 	
