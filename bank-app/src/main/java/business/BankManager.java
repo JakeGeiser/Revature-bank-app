@@ -93,9 +93,9 @@ public class BankManager { // Business Layer
 	}
 	
 	// all transactions of customerId
-	public ArrayList<Transaction> allTransactions(int customerId) throws ItemNotFoundException, Exception{
-		logger.debug("Customer request to view all transactions: "+customerId);
-		return dao.allTransactions(customerId);
+	public ArrayList<Transaction> allTransactions(int customerId, int accountId) throws ItemNotFoundException, Exception{
+		logger.debug("Customer("+customerId+") request to view all transactions of account("+accountId+")");
+		return dao.allTransactions(customerId, accountId);
 	}
 	
 	// get Account info

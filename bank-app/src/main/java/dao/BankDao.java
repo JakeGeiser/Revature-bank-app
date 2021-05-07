@@ -401,21 +401,22 @@ public class BankDao { // Persistence Layer
 	}	
 	
 	// Display all transactions of customer accounts
-	public ArrayList<Transaction> allTransactions(int customerId) throws Exception{
+	public ArrayList<Transaction> allTransactions(int customerId, int accountId) throws Exception{
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 		
 		try {
-			logger.debug("Customer to view all transactions: "+customerId);
+			logger.debug("Customer("+customerId+") to view all transactions of account("+accountId+")");
 			
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, account_id, customer_id, type, amount, time FROM bank.transactions "
-							+"WHERE customer_id = ?";
+							+"WHERE (customer_id = ? AND account_id = ?)";
 			
 			logger.debug("using statement", sql);
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, customerId);
+			pstmt.setInt(2, accountId);
 			
 			ResultSet rs = pstmt.executeQuery();
 			
