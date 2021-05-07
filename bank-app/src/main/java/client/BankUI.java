@@ -497,10 +497,40 @@ public class BankUI { // Customer Layer
 				}
 				break;
 			case 3: // approve account request
-				// TODO
+				System.out.println("Select account request to approve: ");
+				int requestId = input.nextInt();
+				input.nextLine();
+				try {
+					boolean updateSaved = manager.approveRequest(requestId, employeeId);
+					if(updateSaved) {
+						System.out.println("Account Request Approved!");
+					}
+					else {
+						System.out.println("Account Request Approval Failed...");
+					}
+				} catch (ItemNotFoundException e) {
+					logger.error("Account Request Approval ERROR: ", e);
+				} catch (Exception e) {
+					logger.error("Account Request Approval ERROR: ", e);
+				}
 				break;
 			case 4: // deny account request
-				// TODO
+				System.out.println("Select account request to deny: ");
+				int requestId2 = input.nextInt();
+				input.nextLine();
+				try {
+					boolean updateSaved = manager.denyRequest(requestId2, employeeId);
+					if(updateSaved) {
+						System.out.println("Account Request Denied!");
+					}
+					else {
+						System.out.println("Account Request Denial Failed...");
+					}
+				} catch (ItemNotFoundException e) {
+					logger.error("Account Request Denial ERROR: ", e);
+				} catch (Exception e) {
+					logger.error("Account Request Denial ERROR: ", e);
+				}
 				break;
 			case 5: // show all transactions
 				// TODO
