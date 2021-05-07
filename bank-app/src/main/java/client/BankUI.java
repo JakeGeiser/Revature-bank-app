@@ -568,7 +568,25 @@ public class BankUI { // Customer Layer
 				}
 				break;
 			case 7: // show all accounts of customer
-				// TODO
+				System.out.println("Select Customer ID: ");
+				int customerId = input.nextInt();
+				input.nextLine();
+				try {
+					ArrayList<Account> customerAccounts = manager.allAccounts(customerId);
+					System.out.println(" ID | CustomerID | Name | Balance | Date Created");
+					for(Account a : customerAccounts) {
+						System.out.println(a.getId() + " | "
+											+ a.getCustomerId() + " | "
+											+ a.getName() + " | "
+											+ a.getBalance() + " | "
+											+ a.getDateCreated());
+					}
+				
+				} catch (ItemNotFoundException e) {
+					logger.error("Show All Accounts for Customer("+customerId+") ERROR: ",e);
+				} catch (Exception e) {
+					logger.error("Show All Accounts for Customer("+customerId+") ERROR: ",e);
+				}
 				break;
 			case 8: // log out of employee account
 				// TODO
