@@ -533,10 +533,24 @@ public class BankUI { // Customer Layer
 				}
 				break;
 			case 5: // show all transactions
-				// TODO
+				try {
+					ArrayList<Transaction> allTransaction = manager.allTransactions();
+					System.out.println("ID | AccountID | CustomerID | Type | Amount | Time");
+					for(Transaction t : allTransaction) {
+						System.out.println(t.getId()+" |    "
+											+ t.getAccountID() + "    |    "
+											+ t.getCustomerID() + "     |  "
+											+ t.getType()+"  | $"
+											+ t.getAmount() +" | "
+											+ t.getTime());
+					}
+				
+				} catch (Exception e) {
+					logger.error("Employee Show All Transactions ERROR: ", e);
+				}
 				break;
 			case 6: // show all customers
-				// TODO
+				
 				break;
 			case 7: // show all accounts of customer
 				// TODO
