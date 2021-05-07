@@ -156,7 +156,6 @@ public class BankUI { // Customer Layer
 				System.out.println(a.getId()+"       | "
 						+ a.getName() +"  | $"
 								+ a.getBalance());
-				
 			}
 			
 			// Select option
@@ -252,7 +251,24 @@ public class BankUI { // Customer Layer
 	
 	//// implement accountPortal
 	private static void accountPortal(int accountId, BankManager manager, Scanner input) {
-		
+		int accountOption = 0;
+		do {
+			showAccountOptions();
+
+			switch(accountOption) {
+			case 1: // Display Account Balance
+				// TODO
+			case 2: // Display Account Transactions
+				// TODO
+			case 3: // Deposit
+				// TODO
+			case 4: // Withdraw
+				// TODO
+			case 5: // Return to User Options Page
+				// TODO
+			}
+			
+		} while(accountOption > 0 && accountOption < 6);
 	}
 	
 	//// implement registrationPortal
