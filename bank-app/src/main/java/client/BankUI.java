@@ -493,16 +493,25 @@ public class BankUI { // Customer Layer
 					}
 				
 				} catch (Exception e) {
-					logger.error("Getting All Requests ERROR: ", e);
+					logger.error("Getting All Pending Requests ERROR: ", e);
 				}
 				break;
-			case 3: // show
+			case 3: // approve account request
 				// TODO
 				break;
-			case 4:
+			case 4: // deny account request
 				// TODO
 				break;
-			case 5:
+			case 5: // show all transactions
+				// TODO
+				break;
+			case 6: // show all customers
+				// TODO
+				break;
+			case 7: // show all accounts of customer
+				// TODO
+				break;
+			case 8: // log out of employee account
 				// TODO
 				break;
 			default:
@@ -510,7 +519,7 @@ public class BankUI { // Customer Layer
 				break;
 			}
 			
-		} while(employeeOption > 0 && employeeOption < 7);
+		} while(employeeOption > 0 && employeeOption < 9);
 	}
 	
 	
@@ -633,11 +642,14 @@ public class BankUI { // Customer Layer
 		System.out.println();
 		System.out.println("Employee Options");
 		System.out.println("===============================");
-		System.out.println("1. Display Customers");
-		System.out.println("2. Show Customer Accounts by ID");
-		System.out.println("3. Show All Transactions");
-		System.out.println("4. Enter Account Requests Portal");
-		System.out.println("5. Log Out");
+		System.out.println("1. Display All Account Requests");
+		System.out.println("2. Display All Pending Account Requests");
+		System.out.println("3. Approve Account Requests");
+		System.out.println("4. Deny Account Requests");
+		System.out.println("5. Show All Transactions");
+		System.out.println("6. Show All Customers");
+		System.out.println("7. Show All Accounts of Customer x");
+		System.out.println("8. Log Out");
 	}
 	// show all account request options in Account Requests Portal
 	private static void showAccountRequestOptions() {
