@@ -99,9 +99,9 @@ public class BankManager { // Business Layer
 	}
 	
 	// get Account info
-	public Account getAccount(int accountId) throws Exception{
+	public Account getAccount(int customerId, int accountId) throws Exception{
 		logger.debug("Recieved get account info: "+accountId);
-		return dao.getAccount(accountId);
+		return dao.getAccount(customerId, accountId);
 	}
 	
 	//// Employee

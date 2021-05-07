@@ -252,7 +252,7 @@ public class BankUI { // Customer Layer
 			
 			try {
 				
-				double balance1 = manager.getAccount(accountId1).getBalance();
+				double balance1 = manager.getAccount(customerId, accountId1).getBalance();
 				
 				// check if transfer is valid, then make the transfer
 				if (isValidTransaction(balance1,amount)) {
@@ -284,7 +284,7 @@ public class BankUI { // Customer Layer
 			switch(accountOption) {
 			case 1: // Display Account Balance
 				try {
-					double balance = manager.getAccount(accountId).getBalance();
+					double balance = manager.getAccount(customerId, accountId).getBalance();
 					System.out.println("Account("+accountId+") balance: $"+balance);
 				} catch (Exception e) {
 					logger.error("Display Account("+accountId+") Balance ERROR: ", e);
@@ -327,7 +327,7 @@ public class BankUI { // Customer Layer
 				input.nextLine();
 				if(withdraw>0) {
 					try {
-						if(isValidTransaction(manager.getAccount(accountId).getBalance(), withdraw)) {
+						if(isValidTransaction(manager.getAccount(customerId, accountId).getBalance(), withdraw)) {
 							manager.withdraw(customerId, accountId, withdraw);
 						}
 						else {

@@ -441,20 +441,21 @@ public class BankDao { // Persistence Layer
 	}
 	
 	// get account info
-	public Account getAccount(int accountId) throws Exception{
+	public Account getAccount(int customerId, int accountId) throws Exception{
 		Account tempAccount = new Account();
 		try {
 			logger.debug("Customer to view accounts: "+accountId);
 			
 			Connection conn = DbConnector.getInstance().getConnection();
 			String sql = "SELECT id, customer_id, name, balance, date_created FROM bank.accounts "
-							+"WHERE id = ?";
+							+"WHERE (id = ? AND customer_id = ?)";
 			
 			logger.debug("using statement", sql);
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, accountId);
+			pstmt.setInt(2, customerId);
 			
 			ResultSet rs = pstmt.executeQuery();
 			
