@@ -23,3 +23,4 @@
 ![](images/FunctionalFlowChart.png)
 
 ## How To Use
+In order to use this application on your local machine, you must have JDK/JRE and utalize as a maven project. You will need to create a config.properties file that contains properties DB_USER : your database username("postgre" in my case), DB_URL: your database jdbc url(localhost url in my case), and DB_PASSWORD : what you defined your database password as.
