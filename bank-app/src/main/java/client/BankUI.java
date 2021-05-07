@@ -284,12 +284,26 @@ public class BankUI { // Customer Layer
 					logger.error("Display Account("+accountId+") Transactions ERROR: ", e);
 				}
 			case 3: // Deposit
-				// TODO
+				System.out.println("Input amount($) you wish to deposit: ");
+				double deposit = input.nextDouble();
+				input.nextLine();
+				if(deposit>0) {
+					try {
+						manager.deposit(customerId, accountId, deposit);
+					} catch (ItemNotFoundException e) {
+						logger.error("Deposit("+deposit+") into Account("+accountId+") ERROR: ", e);
+					} catch (Exception e) {
+						logger.error("Deposit("+deposit+") into Account("+accountId+") ERROR: ", e);
+					}
+				}
 			case 4: // Withdraw
 				// TODO
 			case 5: // Return to User Options Page
 				// TODO
+			default:
+				// TODO	
 			}
+			
 			
 		} while(accountOption > 0 && accountOption < 6);
 	}
