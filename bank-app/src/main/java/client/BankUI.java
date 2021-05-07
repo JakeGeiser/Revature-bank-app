@@ -148,13 +148,15 @@ public class BankUI { // Customer Layer
 	}
 	
 	/* home page login options
-	 *  //// implement customerPortal
-	 *  //// implement accountPortal
-	 *  //// implement registrationPortal
-	 *  //// implement employeePortal
+	 *  //// define customerPortal
+	 *  //// define accountPortal
+	 *  //// define registrationPortal
+	 *  //// define employeePortal
+	 *  //// input checkers
+	 *  //// print to console methods
 	 */
 	
-	//// implement customerPortal
+	//// define customerPortal
 	private static void customerPortal(int customerId, BankManager manager, Scanner input) {
 		int customerOption = 0;
 		ArrayList<Account> allAccount = new ArrayList<Account>();
@@ -270,7 +272,7 @@ public class BankUI { // Customer Layer
 		
 	}
 	
-	//// implement accountPortal
+	//// define accountPortal
 	private static void accountPortal(int customerId, int accountId, BankManager manager, Scanner input) {
 		int accountOption = 0;
 		do {
@@ -348,7 +350,7 @@ public class BankUI { // Customer Layer
 		} while(accountOption > 0 && accountOption < 6);
 	}
 	
-	//// implement registrationPortal
+	//// define registrationPortal
 	// registration
 	private static void registrationPortal(BankManager manager, Scanner input) {
 		int registrationOption = 0;
@@ -451,9 +453,34 @@ public class BankUI { // Customer Layer
 		return whileCondition;
 	}
 
-	//// implement employeePortal
+	//// define employeePortal
 	private static void employeePortal(int employeeId, BankManager manager, Scanner input) {
 		int employeeOption = 0;
+		
+		do {
+			showEmployeeOptions();
+			switch(employeeOption) {
+			case 1: // Show all account requests
+				// TODO
+				break;
+			case 2: // show all PENDING account requests
+				// TODO
+				break;
+			case 3: // show
+				// TODO
+				break;
+			case 4:
+				// TODO
+				break;
+			case 5:
+				// TODO
+				break;
+			default:
+				// TODO
+				break;
+			}
+			
+		} while(employeeOption > 0 && employeeOption < 5);
 	}
 	
 	
@@ -531,7 +558,7 @@ public class BankUI { // Customer Layer
     	}
     }
     
-	//// show methods for printing options
+	//// print to console methods
 	// login - initial homepage options
 	private static void showLoginOptions() {
 		System.out.println();
