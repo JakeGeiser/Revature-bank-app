@@ -1,6 +1,7 @@
 package client;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -9,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import business.BankManager;
 import exceptions.ItemNotFoundException;
+import model.Account;
 import model.Customer;
 import model.Employee;
 
@@ -137,7 +139,27 @@ public class BankUI { // Customer Layer
 	//// implement customerPortal
 	private static void customerPortal(int customerId, BankManager manager, Scanner input) {
 		int customerOption = 0;
+		ArrayList<Account> allAccount = new ArrayList<Account>();
+		try {
+			// get all accounts
+			allAccount = manager.allAccounts(customerId);
+		} catch (ItemNotFoundException e1) {
+			logger.error("Unable to get all accounts with customerId("+customerId+") ", e1);
+		} catch (Exception e2) {
+			logger.error("Unable to get all accounts with customerId("+customerId+") ", e2);
+		}
+		
 		do {
+			System.out.println("AccountID | AccountName | Balance ");
+			System.out.println("=================================");
+			for(Account a : allAccount) {
+				System.out.println(a.getId()+"       | "
+						+ a.getName() +"  | $"
+								+ a.getBalance());
+				
+			}
+			
+			// Select option
 			customerOption = 0;
 			showCustomerOptions();
 			System.out.println("Select Option: ");
