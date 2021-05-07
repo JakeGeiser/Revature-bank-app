@@ -228,7 +228,6 @@ public class BankUI { // Customer Layer
 				break;
 			default:
 				System.out.println("Invalid Option");
-				customerOption = 5;
 				break;
 			}
 
@@ -343,7 +342,6 @@ public class BankUI { // Customer Layer
 				break;
 			default:
 				System.out.println("Invalid Option");
-				accountOption = 6;
 				break;
 			}
 			
@@ -733,14 +731,5 @@ public class BankUI { // Customer Layer
 		System.out.println("8. Log Out");
 	}
 	// show all account request options in Account Requests Portal
-	private static void showAccountRequestOptions() {
-		System.out.println();
-		System.out.println("Account Request Options");
-		System.out.println("===============================");
-		System.out.println("1. Approve Account Request");
-		System.out.println("2. Deny Account Request");
-		System.out.println("3. Show All Account Requests");
-		System.out.println("4. Show All Pending Account Requests");
-		System.out.println("5. Return to Employee Options");	
-	}
+
 }
