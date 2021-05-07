@@ -550,7 +550,22 @@ public class BankUI { // Customer Layer
 				}
 				break;
 			case 6: // show all customers
+				try {
+					ArrayList<Customer> allCustomer = manager.allCustomers();
+					System.out.println(" ID | First Name | Last Name | Email | Password | Phone | Join Date");
+					for(Customer c : allCustomer) {
+						System.out.println(c.getId() + " | "
+											+ c.getFirstName() + " | "
+											+ c.getLastName() + " | "
+											+ c.getEmail() + " | "
+											+ c.getPassword() + " | "
+											+ c.getPhone() + " | "
+											+ c.getJoinDate());
+					}
 				
+				} catch (Exception e) {
+					logger.error("Employee Show All Customers ERROR: ", e);
+				}
 				break;
 			case 7: // show all accounts of customer
 				// TODO
