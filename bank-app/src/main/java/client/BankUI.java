@@ -460,6 +460,9 @@ public class BankUI { // Customer Layer
 		
 		do {
 			showEmployeeOptions();
+			System.out.println("Select Option: ");
+			employeeOption = input.nextInt();
+			input.nextLine();
 			switch(employeeOption) {
 			case 1: // Show all account requests
 				try {
@@ -589,10 +592,11 @@ public class BankUI { // Customer Layer
 				}
 				break;
 			case 8: // log out of employee account
-				// TODO
+				System.out.println("Logging Out...");
+				employeeOption = 9;
 				break;
 			default:
-				// TODO
+				System.out.println("Invalid Option");
 				break;
 			}
 			
