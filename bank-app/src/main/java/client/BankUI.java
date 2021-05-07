@@ -267,6 +267,7 @@ public class BankUI { // Customer Layer
 				} catch (Exception e) {
 					logger.error("Display Account("+accountId+") Balance ERROR: ", e);
 				}
+				break;
 			case 2: // Display Account Transactions
 				try {
 					ArrayList<Transaction> accTransactions = manager.allTransactions(customerId, accountId);
@@ -283,6 +284,7 @@ public class BankUI { // Customer Layer
 				} catch (Exception e) {
 					logger.error("Display Account("+accountId+") Transactions ERROR: ", e);
 				}
+				break;
 			case 3: // Deposit
 				System.out.println("Input amount($) you wish to deposit: ");
 				double deposit = input.nextDouble();
@@ -296,6 +298,7 @@ public class BankUI { // Customer Layer
 						logger.error("Deposit("+deposit+") into Account("+accountId+") ERROR: ", e);
 					}
 				}
+				break;
 			case 4: // Withdraw
 				System.out.println("Input amount($) you wish to deposit: ");
 				double withdraw = input.nextDouble();
@@ -314,10 +317,14 @@ public class BankUI { // Customer Layer
 						logger.error("Withdraw("+withdraw+") from Account("+accountId+") ERROR: ", e);
 					}
 				}
+				break;
 			case 5: // Return to User Options Page
-				// TODO
+				accountOption = 6;
+				break;
 			default:
-				// TODO	
+				System.out.println("Invalid Option");
+				accountOption = 6;
+				break;
 			}
 			
 			
