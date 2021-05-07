@@ -182,7 +182,7 @@ public class BankUI { // Customer Layer
 			
 			try {
 				
-				double balance1 = accountBalance(accountId1, manager);
+				double balance1 = manager.getAccount(accountId1).getBalance();
 				
 				if (isValidTransaction(balance1,amount)) {
 					manager.transfer(customerId, accountId1, accountId2, amount);
@@ -200,12 +200,6 @@ public class BankUI { // Customer Layer
 	
 	//// implement accountPortal
 	private static void accountPortal(int accountId, BankManager manager, Scanner input) {
-		
-	}
-	
-	private static double accountBalance(int accountId, BankManager manager) throws Exception {
-		
-		return manager.getAccount(accountId).getBalance();
 		
 	}
 	
