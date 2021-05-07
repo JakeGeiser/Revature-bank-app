@@ -257,7 +257,12 @@ public class BankUI { // Customer Layer
 
 			switch(accountOption) {
 			case 1: // Display Account Balance
-				// TODO
+				try {
+					double balance = manager.getAccount(accountId).getBalance();
+					System.out.println("Account("+accountId+") balance: $"+balance);
+				} catch (Exception e) {
+					logger.error("Display Account("+accountId+") Balance ERROR: ", e);
+				}
 			case 2: // Display Account Transactions
 				// TODO
 			case 3: // Deposit
