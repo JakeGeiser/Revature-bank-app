@@ -459,19 +459,20 @@ public class BankDao { // Persistence Layer
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				tempAccount = new Account();
+//				Account tempAccount = new Account();
 				tempAccount.setId(rs.getInt("id"));
 				tempAccount.setCustomerId(rs.getInt("customer_id"));
 				tempAccount.setName(rs.getString("name"));
 				tempAccount.setBalance(rs.getDouble("balance"));
 				tempAccount.setDateCreated(rs.getDate("date_created"));
 			}
+	
 		} catch (SQLException e) {
 			logger.error("Unable to perform DB query", e);
 			throw e;
 		}
 		
-		logger.debug("Returning results: ", tempAccount);
+		logger.debug("Returning results: "+tempAccount);
 		return tempAccount;
 	}
 	
@@ -735,10 +736,10 @@ public class BankDao { // Persistence Layer
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		
 		try {
-			logger.debug("Employee view all transactions");
+			logger.debug("Employee view all customers");
 			
 			Connection conn = DbConnector.getInstance().getConnection();
-			String sql = "SELECT id, first_name, last_name, email, password, phone, join_date FROM bank.transactions";
+			String sql = "SELECT id, first_name, last_name, email, password, phone, join_date FROM bank.customer";
 			
 			logger.debug("using statement", sql);
 			

@@ -83,7 +83,7 @@ public class BankManager { // Business Layer
 	// withdraw
 	public boolean withdraw(int customerId, int accountId, double amount) throws ItemNotFoundException, Exception{
 		logger.debug("Recieved withdraw request", customerId, accountId, amount);
-		return dao.deposit(customerId, accountId, amount);
+		return dao.withdraw(customerId, accountId, amount);
 	}
 	
 	// transfer between accounts
@@ -120,7 +120,7 @@ public class BankManager { // Business Layer
 	// get all pending account requests
 	public ArrayList<AccountRequest> allPendingAccountRequests() throws Exception{
 		logger.debug("Recieved request to view all pending customer account requests");
-		return dao.allAccountRequests();
+		return dao.allPendingAccountRequests();
 	}
 	
 	// approve account request

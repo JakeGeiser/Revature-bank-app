@@ -275,9 +275,12 @@ public class BankUI { // Customer Layer
 	//// define accountPortal
 	private static void accountPortal(int customerId, int accountId, BankManager manager, Scanner input) {
 		int accountOption = 0;
+
 		do {
 			showAccountOptions();
-
+			System.out.println("Select Option:");
+			accountOption = input.nextInt();
+			input.nextLine();
 			switch(accountOption) {
 			case 1: // Display Account Balance
 				try {
@@ -576,8 +579,8 @@ public class BankUI { // Customer Layer
 					ArrayList<Account> customerAccounts = manager.allAccounts(customerId);
 					System.out.println(" ID | CustomerID | Name | Balance | Date Created");
 					for(Account a : customerAccounts) {
-						System.out.println(a.getId() + " | "
-											+ a.getCustomerId() + " | "
+						System.out.println(a.getId() + " |    "
+											+ a.getCustomerId() + "    | "
 											+ a.getName() + " | "
 											+ a.getBalance() + " | "
 											+ a.getDateCreated());
