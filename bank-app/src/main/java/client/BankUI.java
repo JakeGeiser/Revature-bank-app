@@ -82,7 +82,7 @@ public class BankUI { // Customer Layer
 						}
 						else {
 							customerLogin = false;
-							employeePortal(currentCustomer.getId(), manager, input);
+							customerPortal(currentCustomer.getId(), manager, input);
 							break;
 						}
 					}
@@ -92,10 +92,10 @@ public class BankUI { // Customer Layer
 					
 					System.out.println("Try logging in again? (y/n)");
 					if("n".equals(input.nextLine())) {
-						break;
+						customerLogin = false;
 					}
 					
-				}while(currentCustomer.getId() < 1);
+				}while(customerLogin);
 				
 				
 				break;
@@ -131,7 +131,7 @@ public class BankUI { // Customer Layer
 					
 					System.out.println("Try logging in again? (y/n)");
 					if("n".equals(input.nextLine())) {
-						break;
+						employeeLogin = false;
 					}
 					
 				}while(employeeLogin);
